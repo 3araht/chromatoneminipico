@@ -24,6 +24,7 @@ iPad や iPhone で chromatoneminipico を使う場合には電源が必要で�
 オプションにより、LED を搭載すれば写真のようにバックライト点灯させることが可能です（LEDのハンダ付けは難易度が高いので、ご注意ください）。
 
 # 外観および使用例
+姉妹品の [chromatonemini](https://github.com/3araht/chroamtonemini) の使用例はこちら。  
 Chromatic Music Lab. の [CHROMATONE-MINI【DEMO】](https://youtu.be/WQA9r8nkZjo) をご覧ください!  
 また、こちらに[機能詳細紹介動画](https://youtu.be/7tFm5GolF3g)がございます。
 
@@ -54,7 +55,7 @@ https://www.instagram.com/3araht/
 # chromatoneminipico keyboard
 chromatonemini keyboard is a simple-design Chromatone mini MIDI keyboard that covers 3 octaves (37 notes).
 chromatonemini was created on behalf of [Mr. Wataru Ohkawa](https://muto-method.com/en/profile.html), the inventor of chromatone. Mr. Ohkawa gave me permission to sell it as a keyboard kit ♪ He also provided his logo for chromatonemini.  
-chromatonemfinipico is a Raspberry Pi Pico edition of chromatonemini.  
+chromatoneminipico is a Raspberry Pi Pico edition of chromatonemini.  
 
 chromatoneminipico works with PC, Mac, iPad, iPhone, and Android.
 
@@ -73,6 +74,7 @@ A rotary encoder can be used to change the settings of chromatoneminipico by lon
 Check this out!  
 Chromatic Music Lab. [CHROMATONE-MINI【DEMO】](https://youtu.be/WQA9r8nkZjo)  
 A detailed introduction is shown [here](https://youtu.be/7tFm5GolF3g).
+Those are actually [chromatonemini](https://github.com/3araht/giabalanai) and not chromatoneminipico, but you'll get the picture.
 
 # Keyboard kit
 The keyboard kit is available from [BOOTH](https://3araht.booth.pm/).  
