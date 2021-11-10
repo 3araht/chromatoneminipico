@@ -5,6 +5,8 @@ chromatonemini （クロマトーンミニ）キーボードは3オクターブ�
 chromatonemini は、クロマトーン発明者の[大川 ワタルさん](https://muto-method.com/profile.html)から受託して作成致しました。
 大川さんに自作キーボードキットとしての販売許可をいただきました♪ ロゴも chromatonemini のために提供してくださいました。  
 chromatoneminipico は chromatonemini の Raspberry Pi Pico 版です。  
+Raspberry Pi Pico は Pro Micro よりも IO の数が多いため、音階キー111鍵盤 全てが独立して識別できるようになっています。
+これにより、 QWERTY 配列や、クロマチック・ボタン・アコーディオン の C-System、B-System 
 
 カラーリングは [Wholetone Revolution](https://chromatone.jp/chromatone/index.html) をオマージュして赤色になっています（色味は全然ちがいますが。。。）。  
 
