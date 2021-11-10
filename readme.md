@@ -6,14 +6,14 @@ chromatonemini は、クロマトーン発明者の[大川 ワタルさん](http
 大川さんに自作キーボードキットとしての販売許可をいただきました♪ ロゴも chromatonemini のために提供してくださいました。  
 chromatoneminipico は chromatonemini の Raspberry Pi Pico 版です。  
 Raspberry Pi Pico は Pro Micro よりも IO の数が多いため、音階キー111鍵盤 全てが独立して識別できるようになっています。
-これにより、 QWERTY 配列や、クロマチック・ボタン・アコーディオン の C-System、B-System 
+これにより、 QWERTY 配列や、クロマチック・ボタン・アコーディオン の C-System、B-System の配列にも切り替えることができるようになりました！！！
 
 カラーリングは [Wholetone Revolution](https://chromatone.jp/chromatone/index.html) をオマージュして赤色になっています（色味は全然ちがいますが。。。）。  
 
 幅は約42cm。ちょうどA3用紙に長手方向の長さくらいです。  
 37鍵あるピアノ鍵盤MIDIキーボードより省スペースでDTMに最適？かも知れません。
 
-chromatoneminipico は PC / Mac / iPad / iPhone / Android などで動作します。
+chromatoneminipico は PC / Mac / iPad / iPhone / Android などで動作します(ただし、Raspberry Pi Pico にファームウェアを書き込むときに PC / Mac が必要)。
 
 コネクタが Lightning タイプの iPad や iPhone で使う場合、下記に示すアダプターを使って電源供給しながら使えることを確認しています。
 iPad や iPhone で chromatoneminipico を使う場合には電源が必要ですので、必ず "[Lightning - USB 3カメラアダプタ](https://www.apple.com/jp/shop/product/MK0W2AM/A/)" をお使いください。
@@ -57,9 +57,9 @@ https://www.instagram.com/3araht/
 # chromatoneminipico keyboard
 chromatonemini keyboard is a simple-design Chromatone mini MIDI keyboard that covers 3 octaves (37 notes).
 chromatonemini was created on behalf of [Mr. Wataru Ohkawa](https://muto-method.com/en/profile.html), the inventor of chromatone. Mr. Ohkawa gave me permission to sell it as a keyboard kit ♪ He also provided his logo for chromatonemini.  
-chromatoneminipico is a Raspberry Pi Pico edition of chromatonemini.  
+chromatoneminipico is a Raspberry Pi Pico edition of chromatonemini. QWERTY layout, C-System and B-System of chromatic button accordion layouts are now available.  
 
-chromatoneminipico works with PC, Mac, iPad, iPhone, and Android.
+chromatoneminipico works with PC, Mac, iPad, iPhone, and Android(However, either PC or Mac is needed for flashing firmware to Raspberry Pi Pico).
 
 This work pays homage to [Wholetone Revolution](https://muto-method.com/en/history.html), and the red color is coming from it (The color tone is quite different, though...).  
 
