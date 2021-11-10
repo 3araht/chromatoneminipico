@@ -41,7 +41,7 @@ chromatoneminipico は QMK firmware を使っています。
 
 [こちら](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico) からベータ版をダウンロード下さい。
 
-もしくは、こちらのコンパイル済の [uf2 file](https://github.com/3araht/chromatoneminipico/blob/main/chromatoneminipico_led_uf2.zip) をお使いください.
+もしくは、こちらのコンパイル済の [uf2 file](https://github.com/3araht/chromatoneminipico/blob/main/chromatoneminipico_led.uf2) をお使いください.
 
 # ビルドガイド
 
@@ -89,7 +89,7 @@ chromatoneminipico uses QMK for its firmware.
 
 Temporarily, please download codes from [here](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico) as a "beta" version.
 
-Or, use this pre-compiled [uf2 file](https://github.com/3araht/chromatoneminipico/blob/main/chromatoneminipico_led_hex.zip) for your convenience.
+Or, use this pre-compiled [uf2 file](https://github.com/3araht/chromatoneminipico/blob/main/chromatoneminipico_led.uf2) for your convenience.
 
 # Build Guide
 
