@@ -115,7 +115,7 @@ TRRS コネクタを図のように実装します。また、その下にある
 Raspberry Pi Pico に chromatoneminipico のファームウェアを書き込みます。  
 
 まず、
-[chromatonemini_led.uf2](https://github.com/3araht/chromatoneminipico/blob/main/chromatonemini_led.uf2) を ダウンロードします。  
+[chromatoneminipico_led.uf2](https://github.com/3araht/chromatoneminipico/blob/main/chromatoneminipico_led.uf2) を ダウンロードします。  
 
 Raspberry Pi Pico の BOOTSEL ボタンを押しながらUSBケーブルで PC/Mac と接続します。  
 このことで、ブードローダ状態（＝ファームウェアを書き込める状態）になります。
@@ -126,7 +126,7 @@ Raspberry Pi Pico の BOOTSEL ボタンを押しながらUSBケーブルで PC/M
 もし USB ドライブとして認識しない場合は、USB ケーブルが充電専用のものではなく、ちゃんとデータ通信が可能なケーブルかどうかご確認ください。
 （充電器に付属のケーブルなどは、データ通信線が無いものが多いですのでご注意ください。）  
 
-ダウンロードした chromatonemini_led.uf2 をRaspberry Pi Pico のドライブにドラッグ＆ドロップします。  
+ダウンロードした chromatoneminipico_led.uf2 をRaspberry Pi Pico のドライブにドラッグ＆ドロップします。  
 これで Raspberry Pi Pico の書き込みは終わりです。  
 (Raspberry Pi Pico を初めて使われる方は、手始めに LED の点滅＝通称「Lチカ」を試されると良いかもしれません。)  
 
