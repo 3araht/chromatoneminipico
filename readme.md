@@ -35,11 +35,16 @@ chromatoneminipico キーボードキットは BOOTH でお求めいただけま
 [BOOTH 販売ページへのリンクはこちら](https://3araht.booth.pm/)。
 BOOTH では、chroamtonemini / chromatoneminipico の他、クロマチックボタンアコーディオンを模した MIDIキーボードの giabalanai、 giabaLEnai、 giabaRInai、 giabaRInaix2 がお求めいただけます。
 
+遊舎工房でもお求めいただけるようになりました！！！  
+[遊舎工房 販売ページへのリンクはこちら](https://shop.yushakobo.jp/collections/keyboard/products/3069)。
+
 # ファームウェア
 
-chromatoneminipico は QMK firmware を使っています。
+chromatoneminipico は QMK firmware を使っています。  
+ただし 2021/11/13 現在 正式に Raspberry Pi に対応していません。  
+[せきごん さんの開拓された手法](https://scrapbox.io/self-made-kbds-ja/RP2040対応のQMK(非公式)を動かす) を使わせていただいております。  
 
-[こちら](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico) からベータ版をダウンロード下さい。
+chromatoneminipico のソースは[こちら](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico) からダウンロード下さい。
 
 もしくは、こちらのコンパイル済の [uf2 file](https://github.com/3araht/chromatoneminipico/blob/main/chromatoneminipico_led.uf2) をお使いください.
 
@@ -83,17 +88,21 @@ The keyboard kit is available from [BOOTH](https://3araht.booth.pm/).
 
 Click [here](https://www.tenso.com/en/static/lp_shop_booth) for BOOTH overseas shipping!
 
+Now it's available at Yushakobo as well!!!  
+Click [here](https://shop.yushakobo.jp/collections/keyboard/products/3069) for Yushakobo's chromatoneminipico page.
+
 # Firmware
 
-chromatoneminipico uses QMK for its firmware.
+chromatoneminipico uses QMK for its firmware. However, as of Nov 13th, 2021, QMK does not fully support Raspberry Pi...  
+Thanks to sekigon-gonnoc, [the method sekigon-gonnoc has built](https://scrapbox.io/self-made-kbds-ja/RP2040対応のQMK(非公式)を動かす) is used.  
 
-Temporarily, please download codes from [here](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico) as a "beta" version.
+Please download chromatoneminipico codes from [here](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico).
 
 Or, use this pre-compiled [uf2 file](https://github.com/3araht/chromatoneminipico/blob/main/chromatoneminipico_led.uf2) for your convenience.
 
 # Build Guide
 
-[Japanese Build Guide](https://github.com/3araht/chromatoneminipico/blob/main/docs/build.md)  
+[Build Guide in Japanese](https://github.com/3araht/chromatoneminipico/blob/main/docs/build.md)  
 Try [Google Translated guide](https://translate.google.com/translate?sl=ja&tl=en&u=https://github.com/3araht/chromatoneminipico/blob/main/docs/build.md) for your language preferences. Trust me, it works quite well, more than expected.
 
 # Contact
