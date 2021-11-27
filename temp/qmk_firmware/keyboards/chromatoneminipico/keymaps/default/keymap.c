@@ -36,12 +36,14 @@ static uint8_t scale_indicator_col = DEFAULT_SCALE_COL;
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
-    SHIFT_L = SAFE_RANGE,
-    SHIFT_R,
-    TGLINDI,  //  ToGgLeINDIcator
-
-    L_BASE,
-    L_TRANS
+    L_BASE = SAFE_RANGE,
+    L_RESERVE1,
+    L_RESERVE2,
+    L_RESERVE3,
+    L_RESERVE4,
+    L_RESERVE5,
+    L_RESERVE6,
+    L_RESERVE7
 };
 
 // Long press: go to _FN layer, tap: MUTE
@@ -58,18 +60,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_VOLD, KC_VOLU,       MI_Db_2, MI_Eb_2, MI_F_2,  MI_G_2,  MI_A_2,  MI_B_2, MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
             FN_MUTE,         MI_C_2, MI_D_2, MI_E_2,  MI_Fs_2, MI_Ab_2, MI_Bb_2, MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
             MI_BENDU,           MI_Db_2, MI_Eb_2, MI_F_2,  MI_G_2,  MI_A_2,  MI_B_2, MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-        SHIFT_L, SHIFT_R,    MI_C_2, MI_D_2, MI_E_2,  MI_Fs_2, MI_Ab_2, MI_Bb_2, MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
+        MI_TRNSD, MI_TRNSU,    MI_C_2, MI_D_2, MI_E_2,  MI_Fs_2, MI_Ab_2, MI_Bb_2, MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
             MI_BENDD,           MI_Db_2, MI_Eb_2, MI_F_2,  MI_G_2,  MI_A_2,  MI_B_2, MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4
-    ),
-
-    /* Trans   This layer must locate 1 layer above _BASE layer. */
-    [_TRANS] = LAYOUT(
-            _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        MI_TRNSD, MI_TRNSU,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
     [_QWERTY] = LAYOUT(
@@ -82,12 +74,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_FN] =  LAYOUT(
-            XXXXXXX,          QWERTY,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-            _______,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-            MI_VELU,               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        MI_OCTD, MI_OCTU,     L_BASE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-            MI_VELD,               L_TRANS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_SAD, RGB_HUD, RGB_SPD, RGB_VAD, RGB_RMOD, TGLINDI
+            XXXXXXX,          QWERTY,    XXXXXXX,     XXXXXXX,     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX,          XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+            _______,          XXXXXXX,   XXXXXXX,     XXXXXXX,     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+            MI_VELU,               XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        MI_OCTD, MI_OCTU,     L_BASE,    XXXXXXX,     XXXXXXX,     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+            MI_VELD,               L_RESERVE1, L_RESERVE2, L_RESERVE3, L_RESERVE4, L_RESERVE5, L_RESERVE6, L_RESERVE7, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, EEP_RST, XXXXXXX, XXXXXXX
     ),
 
     [_RESERVE1] = LAYOUT(
@@ -154,17 +146,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-void keyboard_post_init_user(void) {
-    //  Set otave to MI_OCT_0
-    midi_config.octave = MI_OCT_0 - MIDI_OCTAVE_MIN;
 
+// commom codes called from eeconfig_init_user() and keyboard_post_init_user().
+void my_init(void){
+    //  Set octave to MI_OCT_1
+    midi_config.octave = MI_OCT_0 - MIDI_OCTAVE_MIN;
+    // avoid using 127 since it is used as a special number in some sound sources.
+    midi_config.velocity = MIDI_INITIAL_VELOCITY;
     default_layer_set(1UL << _BASE);
+}
+
+void eeconfig_init_user(void) {  // EEPROM is getting reset!
+    midi_init();
+    my_init(); // commom codes called from eeconfig_init_user() and keyboard_post_init_user().
+}
+
+void keyboard_post_init_user(void) {
+    my_init(); // commom codes called from eeconfig_init_user() and keyboard_post_init_user().
 };
 
 void reset_scale_indicator(void) {
     //  reset transpose value and scale_indicator_col to default.
     midi_config.transpose = 0;
-    scale_indicator_col = DEFAULT_SCALE_COL;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -175,23 +178,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             default_layer_set(1UL << _BASE);
             break;
 
-        case L_TRANS:
+            case L_RESERVE1:
             reset_scale_indicator();
-            default_layer_set(1UL << _TRANS);
+            default_layer_set(1UL << _RESERVE1);
             break;
 
-        //  SHIFTDN and SHIFTUP can be pressed only when layer is _BASE
-        case SHIFT_L:
-            if (record->event.pressed) {
-                scale_indicator_col = shift_led_indicator_left(scale_indicator_col);
-            }
+            case L_RESERVE2:
+            reset_scale_indicator();
+            default_layer_set(1UL << _RESERVE2);
             break;
 
-        case SHIFT_R:
-            if (record->event.pressed) {
-                scale_indicator_col = shift_led_indicator_right(scale_indicator_col);
-            }
+            case L_RESERVE3:
+            reset_scale_indicator();
+            default_layer_set(1UL << _RESERVE3);
             break;
-    }
+
+            case L_RESERVE4:
+            reset_scale_indicator();
+            default_layer_set(1UL << _RESERVE4);
+            break;
+
+            case L_RESERVE5:
+            reset_scale_indicator();
+            default_layer_set(1UL << _RESERVE5);
+            break;
+
+            case L_RESERVE6:
+            reset_scale_indicator();
+            default_layer_set(1UL << _RESERVE6);
+            break;
+
+            case L_RESERVE7:
+            reset_scale_indicator();
+            default_layer_set(1UL << _RESERVE7);
+            break;
+        }
     return true;
 }

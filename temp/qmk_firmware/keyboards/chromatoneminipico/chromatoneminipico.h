@@ -124,3 +124,7 @@ enum my_key_names {
 extern MidiDevice midi_device;
 uint8_t shift_led_indicator_left(uint8_t scale_indicator_col);
 uint8_t shift_led_indicator_right(uint8_t scale_indicator_col);
+
+void encoder_action_unregister(void);
+
+void encoder_action_register(uint8_t index, bool clockwise);
