@@ -135,7 +135,7 @@ Raspberry Pi Pico の BOOTSEL ボタンを押しながらUSBケーブルで PC/M
 ### 3.2 ###
 ### REMAP を使った初期キー配列の初期化 ###
 [REMAP](https://remap-keys.app/) でキー配列を自由に変更することが可能です。  
-ファームウェアを書き込んだ Raspberry Pi Pico をPC/Mac で Chrome ブラウザを使って上記リンクにアクセスしてください(残念ながら、iPhone、iPad、タブレットなどのブラウザでは非対応)。　　
+ファームウェアを書き込んだ Raspberry Pi Pico をPC/Mac に接続した状態で Chrome ブラウザを使って上記リンクにアクセスしてください(残念ながら、iPhone、iPad、タブレットなどのブラウザでは非対応)。  
 キー配列をデフォルトのままで使用する場合も、最初の1回は以下の手順でキー配列の初期化を行ってください。  
 
 したの部分をクリック。  
@@ -150,7 +150,8 @@ Raspberry Pi Pico の BOOTSEL ボタンを押しながらUSBケーブルで PC/M
 完了すると、右上にその旨表示されます。これで、初期値のキー配列を使用できるようになります。    
 <img width="700" alt="REMAP reset" src="https://github.com/3araht/chromatoneminipico/blob/main/pictures/chromatoneminipico_REMAP_reset4.png">  
 
-
+#### このファームウェアでの REMAP の挙動について ####
+原因不明ですが、 今回の Raspberry Pi Pico のファームウェアでは、REMAP 機能の1つである "Test Matrix mode" が動作しません。 ちゃんとキーを認識して音も出るのですが、"Test Matrix mode" でそのキーが押されたという判定になりませんでした。6, で示すように、キースイッチの動作確認は実際に音がでるかどうかで判断します。  
 
 
 ### Raspberry Pi Pico の取付け ###
@@ -214,7 +215,7 @@ SK6812mini-E は三角のマークの部分に切り欠きの入った端子（G
 <img width="700" alt="RGB_LED" src="https://github.com/3araht/chromatoneminipico/blob/main/pictures/SK6812mini_alignment_rpp_r02.jpg">  
 
 温調半田ごてを使い、約240℃で半田付けします。温度が高いと LED が壊れますので注意してください。
-温調できない半田ごてではすぐに焦げます＆壊れます（これも経験者談）。
+温調できない半田ごてではすぐに焦げます＆壊れます（これも経験者談）。  
 <img width="700" alt="RGB_LED" src="https://github.com/3araht/chromatoneminipico/blob/main/pictures/SK6812mini_soldered_rpp_r02.jpg">  
 
 LED の情報は直列に伝送されますので、接続が途切れてしまうと正しく LED が光らなくなります。  
