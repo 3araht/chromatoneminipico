@@ -148,6 +148,85 @@ const uint8_t led_c_indicator[2][12][10] = {
 
 #endif  //  RGB_MATRIX_ENABLE
 
+void my_process_midi4Bass(uint8_t channel, keyrecord_t *record,
+                          uint8_t *chord_status, uint8_t chord, uint16_t root_note, bool is_single_bass) {
+    uint8_t velocity = midi_config.velocity;
+    if (record->event.pressed) {
+        if (chord_status[chord] == MIDI_INVALID_NOTE) {
+            uint8_t note = midi_compute_note(root_note);
+            if (is_single_bass) {
+                midi_send_noteon(&midi_device, channel, note, velocity);
+            } else {
+                midi_send_noteon(&midi_device, channel, note, velocity);
+                midi_send_noteon(&midi_device, channel, note + 12, velocity);  // +1 Octave
+            }
+            dprintf("midi noteon channel:%d note:%d velocity:%d\n", channel, note, velocity);
+            chord_status[chord] = note;  // store root_note status.
+        }
+    } else {
+        uint8_t note = chord_status[chord];
+        if (note != MIDI_INVALID_NOTE) {
+            if (is_single_bass) {
+                midi_send_noteoff(&midi_device, channel, note, velocity);
+            } else {
+                midi_send_noteoff(&midi_device, channel, note, velocity);
+                midi_send_noteoff(&midi_device, channel, note + 12, velocity);  // +1 Octave
+            }
+            dprintf("midi noteoff channel:%d note:%d velocity:%d\n", channel, note, velocity);
+        }
+        chord_status[chord] = MIDI_INVALID_NOTE;
+    }
+}
+
+void my_process_midi4DiadChords(uint8_t channel, keyrecord_t *record,
+                                 uint8_t *chord_status, uint8_t chord, uint16_t root_note,
+                                 int8_t offset1, int8_t offset2) {
+    uint8_t velocity = midi_config.velocity;
+    if (record->event.pressed) {
+        if (chord_status[chord] == MIDI_INVALID_NOTE) {
+            uint8_t note = midi_compute_note(root_note);
+            midi_send_noteon(&midi_device, channel, note + offset1, velocity);
+            midi_send_noteon(&midi_device, channel, note + offset2, velocity);
+            dprintf("midi noteon channel:%d note:%d velocity:%d\n", channel, note, velocity);
+            chord_status[chord] = note;  // store root_note status.
+        }
+    } else {
+        uint8_t note = chord_status[chord];
+        if (note != MIDI_INVALID_NOTE) {
+            midi_send_noteoff(&midi_device, channel, note + offset1, velocity);
+            midi_send_noteoff(&midi_device, channel, note + offset2, velocity);
+            dprintf("midi noteoff channel:%d note:%d velocity:%d\n", channel, note, velocity);
+        }
+    chord_status[chord] = MIDI_INVALID_NOTE;
+    }
+}
+
+
+void my_process_midi4TriadChords(uint8_t channel, keyrecord_t *record,
+                                 uint8_t *chord_status, uint8_t chord, uint16_t root_note,
+                                 int8_t offset1, int8_t offset2, int8_t offset3) {
+    uint8_t velocity = midi_config.velocity;
+    if (record->event.pressed) {
+        if (chord_status[chord] == MIDI_INVALID_NOTE) {
+            uint8_t note = midi_compute_note(root_note);
+            midi_send_noteon(&midi_device, channel, note + offset1, velocity);
+            midi_send_noteon(&midi_device, channel, note + offset2, velocity);
+            midi_send_noteon(&midi_device, channel, note + offset3, velocity);
+            dprintf("midi noteon channel:%d note:%d velocity:%d\n", channel, note, velocity);
+            chord_status[chord] = note;  // store root_note status.
+        }
+    } else {
+        uint8_t note = chord_status[chord];
+        if (note != MIDI_INVALID_NOTE) {
+            midi_send_noteoff(&midi_device, channel, note + offset1, velocity);
+            midi_send_noteoff(&midi_device, channel, note + offset2, velocity);
+            midi_send_noteoff(&midi_device, channel, note + offset3, velocity);
+            dprintf("midi noteoff channel:%d note:%d velocity:%d\n", channel, note, velocity);
+        }
+    chord_status[chord] = MIDI_INVALID_NOTE;
+    }
+}
+
 uint8_t shift_led_indicator_left(uint8_t scale_indicator_col){
     if (scale_indicator_col > 0) {
         scale_indicator_col--;

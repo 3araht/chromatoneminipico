@@ -397,11 +397,15 @@ Wrote 130560 bytes to /Volumes/RPI-RP2/NEW.UF2.
 
 #### 10.1.3 ####
 #### 初期キー配列の初期化 ####
-ファームウェアを書き込んだ後は、[REMAP を使った初期キー配列の初期化](#3.2) を参考にしてキー配列を初期化してください。  
+ファームウェアを書き込んだ後は、[REMAP を使った初期キー配列の初期化](#32) を参考にしてキー配列を初期化してください。  
 
 ### 10.2 ###
 #### layers ####
 音符のレイアウト一覧  
+2021/12/28 追記: Erwan Mellec さんからアコーディオンの左手側の配列も追加してほしいというご要望頂きまして、ACCORDIONBASS レイヤーを追加しました。  
+Erwan さん、ご要望いただきありがとうございました！！！  
+
+
 <img width="700" alt="Layer" src="https://github.com/3araht/chromatoneminipico/blob/main/pictures/chromatoneminipico_notes_layout.png">    
 
 エンコーダボタン長押ししたときの様子 Function(FN) Layer  

@@ -27,6 +27,16 @@
 #define ALT_SUB_CH_NUMBER      3
 static uint8_t midi_left_ch = DEFAULT_SUB_CH_NUMBER;       //  By default, DEFAULT_SUB_CH_NUMBER is used for left side when separated.
 
+//  Channel settings for the Accordion Bass layer.
+//  The bass and chord channels are separated as shown below by default.
+//  Or Channel 1 (=0 in the coding) will be used for all.
+//  Note that (actual MIDI ch# - 1) -> 0 .. 15 is used for coding.
+//  ch2
+#define SEPARATION_BASS_CH_NUMBER   2
+//  ch3
+#define SEPARATION_CHORD_CH_NUMBER  1
+uint8_t midi_bass_ch = DEFAULT_MAIN_CH_NUMBER, midi_chord_ch = DEFAULT_MAIN_CH_NUMBER;  // By default, all use the same channel.
+
 //  By default( when use_alt_ch_gr == false), DEFAULT ch group (DEFAULT_MAIN_CH_NUMBER for entirely, or right side when separated, DEFAULT_SUB_CH_NUMBER for left side) is used.
 //  When false, ALT ch group (ALT_MAIN_CH_NUMBER for entirely, or right side when separated, ALT_SUB_CH_NUMBER for left side) is used.
 static bool use_alt_ch_gr = false;
@@ -42,6 +52,7 @@ enum layer_names {
     _TRANS,             //  Transpose feature is enabled instead of shift mode, single channel.
     _FLIPBASE,          //  Horizontal flipped version entirely. single channel.
     _FLIPTRANS,         //  Horizontal flipped version entirely. Transpose is used. single channel.
+    _ACCORDIONBASS,     //  Accordion Bass layer.
     _QWERTY,            //  QWERTY keyboard layout.
     _FN                 //  FuNction layer. This must be at the end of the enumurate to use the range from _LS_FN ... _LS_FN_MAX for FN layer LED settings.
 };
@@ -51,6 +62,7 @@ enum layer_names {
 #define _LS_SEPAHALF       (1UL << _SEPAHALF)
 #define _LS_SEPARIGHTOCT   (1UL << _SEPARIGHTOCT)
 #define _LS_FLIPBASE       (1UL << _FLIPBASE)
+#define _LS_ACCORDIONBASS  (1UL << _ACCORDIONBASS)
 
 #define _LS_TRANS          (1UL << _BASE         | 1UL << _TRANS)
 #define _LS_SEPALEFTOCT_T  (1UL << _SEPALEFTOCT  | 1UL << _TRANS)
@@ -84,6 +96,10 @@ enum custom_keycodes {
     TGLINTR,  //  ToGgLe INdicator location {(_KEY01, _KEY13, _KEY25, _KEY37) or (_KEY02, _KEY14, _KEY26) / (_KEY12, _KEY24, _KEY36)}in TRans mode
     TGLTRNS,  //  ToGgLe TRaNS and shift
     TGLCHGR,  //  ToGgLe CH GRoup
+
+    TGLBASS,  // ToGgLe BASS unison for the Accordion Bass layer.
+    TGLMICH,  // ToGgLe MIdi CHannel separation for the Accordion Bass layer.
+    ACCOBAS,  // ACCOdion BASs layer.
 
     B_BASE,            //  border set to the left end.
     B_LEFT,            //  border set to the 1st left octave.
@@ -207,9 +223,115 @@ enum custom_keycodes {
     YM_B_5,
 
     YM_C_6,
-    YM_TONE_MAX = YM_C_6
+    YM_TONE_MAX = YM_C_6,
+
+
+    // MIDI Chord Keycodes - Root notes
+    MY_CHORD_MIN,
+
+    MI_CH_Cr = MY_CHORD_MIN,
+    MI_CH_Csr,
+    MI_CH_Dbr = MI_CH_Csr,
+    MI_CH_Dr,
+    MI_CH_Dsr,
+    MI_CH_Ebr = MI_CH_Dsr,
+    MI_CH_Er,
+    MI_CH_Fr,
+    MI_CH_Fsr,
+    MI_CH_Gbr = MI_CH_Fsr,
+    MI_CH_Gr,
+    MI_CH_Gsr,
+    MI_CH_Abr = MI_CH_Gsr,
+    MI_CH_Ar,
+    MI_CH_Asr,
+    MI_CH_Bbr = MI_CH_Asr,
+    MI_CH_Br,
+
+    // MIDI Chord Keycodes - Major
+
+    MI_CH_C,
+    MI_CH_Cs,
+    MI_CH_Db = MI_CH_Cs,
+    MI_CH_D,
+    MI_CH_Ds,
+    MI_CH_Eb = MI_CH_Ds,
+    MI_CH_E,
+    MI_CH_F,
+    MI_CH_Fs,
+    MI_CH_Gb = MI_CH_Fs,
+    MI_CH_G,
+    MI_CH_Gs,
+    MI_CH_Ab = MI_CH_Gs,
+    MI_CH_A,
+    MI_CH_As,
+    MI_CH_Bb = MI_CH_As,
+    MI_CH_B,
+
+    // MIDI Chord Keycodes Minor
+
+    MI_CH_Cm,
+    MI_CH_Csm,
+    MI_CH_Dbm = MI_CH_Csm,
+    MI_CH_Dm,
+    MI_CH_Dsm,
+    MI_CH_Ebm = MI_CH_Dsm,
+    MI_CH_Em,
+    MI_CH_Fm,
+    MI_CH_Fsm,
+    MI_CH_Gbm = MI_CH_Fsm,
+    MI_CH_Gm,
+    MI_CH_Gsm,
+    MI_CH_Abm = MI_CH_Gsm,
+    MI_CH_Am,
+    MI_CH_Asm,
+    MI_CH_Bbm = MI_CH_Asm,
+    MI_CH_Bm,
+
+    //MIDI Chord Keycodes Dominant Seventh
+
+    MI_CH_CDom7,
+    MI_CH_CsDom7,
+    MI_CH_DbDom7 = MI_CH_CsDom7,
+    MI_CH_DDom7,
+    MI_CH_DsDom7,
+    MI_CH_EbDom7 = MI_CH_DsDom7,
+    MI_CH_EDom7,
+    MI_CH_FDom7,
+    MI_CH_FsDom7,
+    MI_CH_GbDom7 = MI_CH_FsDom7,
+    MI_CH_GDom7,
+    MI_CH_GsDom7,
+    MI_CH_AbDom7 = MI_CH_GsDom7,
+    MI_CH_ADom7,
+    MI_CH_AsDom7,
+    MI_CH_BbDom7 = MI_CH_AsDom7,
+    MI_CH_BDom7,
+
+    // MIDI Chord Keycodes Diminished Seventh
+
+    MI_CH_CDim7,
+    MI_CH_CsDim7,
+    MI_CH_DbDim7 = MI_CH_CsDim7,
+    MI_CH_DDim7,
+    MI_CH_DsDim7,
+    MI_CH_EbDim7 = MI_CH_DsDim7,
+    MI_CH_EDim7,
+    MI_CH_FDim7,
+    MI_CH_FsDim7,
+    MI_CH_GbDim7 = MI_CH_FsDim7,
+    MI_CH_GDim7,
+    MI_CH_GsDim7,
+    MI_CH_AbDim7 = MI_CH_GsDim7,
+    MI_CH_ADim7,
+    MI_CH_AsDim7,
+    MI_CH_BbDim7 = MI_CH_AsDim7,
+    MI_CH_BDim7,
+
+    MY_CHORD_MAX = MI_CH_BDim7,
 };
 
+#define MY_CHORD_COUNT (MY_CHORD_MAX - MY_CHORD_MIN + 1)
+static uint8_t chord_status[MY_CHORD_COUNT];
 #define MY_TONE_COUNT (YM_TONE_MAX - YM_TONE_MIN + 1)
 static uint8_t my_tone_status[MY_TONE_COUNT];
 
@@ -219,6 +341,19 @@ static uint8_t my_tone_status[MY_TONE_COUNT];
 // Used to set octave to MI_OCT_0
 extern midi_config_t midi_config;
 static bool is_trans_mode = false;     //  By default, shift mode is chosen.
+
+// To record the status of Bass Chord (single or dyad, default: dyad.)
+typedef union {
+    uint32_t raw;
+    struct {
+        bool    isSingleBass:1;
+        uint8_t chord_ch:4;
+        uint8_t bass_ch:4;
+    };
+} user_config_t;
+user_config_t user_config;
+
+#define IS_SINGLE_BASS()   (user_config.isSingleBass)
 
 static uint8_t key_separator_col = _KEY01;  //  (_KEY01 .. _KEY37).     By default, _KEY01 (= _BASE layer) is chosen. _KEY13 = *LEFT, _KEY19 = *HALF, _KEY25 = *RIGHT, _KEY37 = _FLIPBASE and _FLIPTRANS.
 
@@ -297,7 +432,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FLIPBASE] = LAYOUT(
             MI_SUS,           MI_C_5, MI_Bb_4, MI_Ab_4,  MI_Fs_4, MI_E_4, MI_D_4, MI_C_4, MI_Bb_3, MI_Ab_3, MI_Fs_3, MI_E_3, MI_D_3, MI_C_3,  MI_Bb_2,  MI_Ab_2, MI_Fs_2, MI_E_2, MI_D_2, MI_C_2,
         _______, _______,       MI_B_4, MI_A_4, MI_G_4,  MI_F_4,  MI_Eb_4,  MI_Db_4, MI_B_3, MI_A_3, MI_G_3,  MI_F_3, MI_Eb_3,  MI_Db_3, MI_B_2, MI_A_2, MI_G_2,  MI_F_2,  MI_Eb_2,  MI_Db_2,
-            FN_MUTE,          MI_C_5, MI_Bb_4, MI_Ab_4,  MI_Fs_4, MI_E_4, MI_D_4, MI_C_4, MI_Bb_3, MI_Ab_3, MI_Fs_3, MI_E_3, MI_D_3, MI_C_3,  MI_Bb_2,  MI_Ab_2, MI_Fs_2, MI_E_2, MI_D_2, MI_C_2,
+            _______,          MI_C_5, MI_Bb_4, MI_Ab_4,  MI_Fs_4, MI_E_4, MI_D_4, MI_C_4, MI_Bb_3, MI_Ab_3, MI_Fs_3, MI_E_3, MI_D_3, MI_C_3,  MI_Bb_2,  MI_Ab_2, MI_Fs_2, MI_E_2, MI_D_2, MI_C_2,
             MI_BENDU,           MI_B_4, MI_A_4, MI_G_4,  MI_F_4,  MI_Eb_4,  MI_Db_4, MI_B_3, MI_A_3, MI_G_3,  MI_F_3, MI_Eb_3,  MI_Db_3, MI_B_2, MI_A_2, MI_G_2,  MI_F_2,  MI_Eb_2,  MI_Db_2,
         SHIFT_L, SHIFT_R,     MI_C_5, MI_Bb_4, MI_Ab_4,  MI_Fs_4, MI_E_4, MI_D_4, MI_C_4, MI_Bb_3, MI_Ab_3, MI_Fs_3, MI_E_3, MI_D_3, MI_C_3,  MI_Bb_2,  MI_Ab_2, MI_Fs_2, MI_E_2, MI_D_2, MI_C_2,
             MI_BENDD,           MI_B_4, MI_A_4, MI_G_4,  MI_F_4,  MI_Eb_4,  MI_Db_4, MI_B_3, MI_A_3, MI_G_3,  MI_F_3, MI_Eb_3,  MI_Db_3, MI_B_2, MI_A_2, MI_G_2,  MI_F_2,  MI_Eb_2,  MI_Db_2
@@ -311,6 +446,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         MI_TRNSU, MI_TRNSD,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
             _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    ),
+
+    /* Accordion Bass */
+    [_ACCORDIONBASS] = LAYOUT(
+            MI_SUS,          MI_CH_Ar,  MI_CH_Er,    MI_CH_Br,     MI_CH_Gbr,    MI_CH_Dbr,    MI_CH_Abr,    MI_CH_Ebr,   MI_CH_Bbr  , MI_CH_Fr,    MI_CH_Cr,    MI_CH_Gr,    MI_CH_Dr,    MI_CH_Ar,    MI_CH_Er,    MI_CH_Br,     MI_CH_Gbr,    MI_CH_Dbr,    MI_CH_Abr,  MI_CH_Ebr,
+        _______, _______,         MI_CH_Fr,  MI_CH_Cr,     MI_CH_Gr,     MI_CH_Dr,     MI_CH_Ar,     MI_CH_Er,     MI_CH_Br,    MI_CH_Fsr,   MI_CH_Csr,   MI_CH_Gsr,   MI_CH_Dsr,   MI_CH_Asr,   MI_CH_Fr,    MI_CH_Cr,     MI_CH_Gr,     MI_CH_Dr,     MI_CH_Ar,     MI_CH_Er,
+            FN_MUTE,         MI_CH_Gbr, MI_CH_Dbr,   MI_CH_Abr,    MI_CH_Ebr,    MI_CH_Bbr,    MI_CH_Fr,     MI_CH_Cr,    MI_CH_Gr,    MI_CH_Dr,    MI_CH_Ar,    MI_CH_Er,    MI_CH_Br,    MI_CH_Fsr,   MI_CH_Csr,   MI_CH_Gsr,    MI_CH_Dsr,    MI_CH_Asr,    MI_CH_Fr,   MI_CH_Cr,
+            MI_OCTU,              MI_CH_Gb,  MI_CH_Db,     MI_CH_Ab,     MI_CH_Eb,     MI_CH_Bb,     MI_CH_F,      MI_CH_C,     MI_CH_G,     MI_CH_D,     MI_CH_A,     MI_CH_E,     MI_CH_B,     MI_CH_Fs,    MI_CH_Cs,     MI_CH_Gs,     MI_CH_Ds,     MI_CH_As,     MI_CH_F,
+        MI_VELD, MI_VELU,    MI_CH_Bm,  MI_CH_Gbm,   MI_CH_Dbm,    MI_CH_Abm,    MI_CH_Ebm,    MI_CH_Bbm,    MI_CH_Fm,    MI_CH_Cm,    MI_CH_Gm,    MI_CH_Dm,    MI_CH_Am,    MI_CH_Em,    MI_CH_Bm,    MI_CH_Fsm,   MI_CH_Csm,    MI_CH_Gsm,    MI_CH_Dsm,    MI_CH_Asm,  MI_CH_Fm,
+            MI_OCTD,            MI_CH_BDom7, MI_CH_GbDom7, MI_CH_DbDom7, MI_CH_AbDom7, MI_CH_EbDom7, MI_CH_BbDom7, MI_CH_FDom7, MI_CH_CDom7, MI_CH_GDom7, MI_CH_DDom7, MI_CH_ADom7, MI_CH_EDom7, MI_CH_BDom7, MI_CH_FsDom7, MI_CH_CsDom7, MI_CH_GsDom7, MI_CH_DsDom7, MI_CH_AsDom7
     ),
 
     [_QWERTY] = LAYOUT(
@@ -327,39 +472,75 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RGB_RMOD, RGB_MOD,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
             _______,          B_BASE,  XXXXXXX, CSYSTEM, XXXXXXX, BSYSTEM, XXXXXXX, B_LEFT, XXXXXXX, XXXXXXX, B_CENTER, XXXXXXX, XXXXXXX, B_RIGHT, XXXXXXX, XXXXXXX,  QWERTY, XXXXXXX, XXXXXXX, B_FLIP,
             MI_VELD,               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        MI_OCTD, MI_OCTU,     B_BASE,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, B_LEFT, XXXXXXX, XXXXXXX, B_CENTER, XXXXXXX, XXXXXXX, B_RIGHT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, B_FLIP,
+        MI_OCTD, MI_OCTU,     B_BASE,  XXXXXXX, TGLBASS, ACCOBAS, TGLMICH, XXXXXXX, B_LEFT, XXXXXXX, XXXXXXX, B_CENTER, XXXXXXX, XXXXXXX, B_RIGHT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, B_FLIP,
             MI_VELD,               TGLINTR, TGLTRNS, TGLCHGR, XXXXXXX, XXXXXXX, RGB_SAD, RGB_SAI, RGB_HUD, RGB_HUI, RGB_SPD, RGB_SPI, RGB_VAD, RGB_VAI, RGB_RMOD, RGB_MOD, EEP_RST, TGLINDI, RGB_TOG
     )
 };
 
-// #ifndef CONSOLE_ENABLE
+// commom codes called from eeconfig_init_user() and keyboard_post_init_user().
+void my_init(void){
+    //  Set octave to MI_OCT_1
+    midi_config.octave = MI_OCT_0 - MIDI_OCTAVE_MIN;
+    // avoid using 127 since it is used as a special number in some sound sources.
+    midi_config.velocity = MIDI_INITIAL_VELOCITY;
+    default_layer_set(_LS_BASE);
+    layer_state_set(_LS_BASE);
+
+#ifdef RGB_MATRIX_ENABLE
+    //  party mode (for LED soldering test. Enable rainbow color effect, and disable led_indicator to check all LEDs)
+    rgb_matrix_mode(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
+    led_indicator_enable = false;
+#endif  // RGB_MATRIX_ENABLE
+}
+
 void eeconfig_init_user(void) {  // EEPROM is getting reset!
+    midi_init();
+
+#ifdef RGB_MATRIX_ENABLE
     rgb_matrix_enable();
     rgb_matrix_set_speed(RGB_MATRIX_STARTUP_SPD);
     rgb_matrix_sethsv(HSV_BLUE);
+#endif  // RGB_MATRIX_ENABLE
 
-    //  party mode (for LED soldering test.)
-    rgb_matrix_mode(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
+    //  Reset Bass setting
+    user_config.raw = 0;  // default: dyad
+    eeconfig_update_user(user_config.raw);
+
+    my_init(); // commom codes called from eeconfig_init_user() and keyboard_post_init_user().
 }
-// #endif
 
 void keyboard_post_init_user(void) {
-    //  Set octave to MI_OCT_1
-    midi_config.octave = MI_OCT_0 - MIDI_OCTAVE_MIN;
-
-    // avoid using 127 since it is used as a special number in some sound sources.
-    midi_config.velocity = MIDI_INITIAL_VELOCITY;
+    for (uint8_t i = 0; i < MY_CHORD_COUNT; i++) {
+        chord_status[i] = MIDI_INVALID_NOTE;
+    }
 
     for (uint8_t i = 0; i < MY_TONE_COUNT; i++) {
         my_tone_status[i] = MIDI_INVALID_NOTE;
     }
+    //  load EEPROM data for isSingleBass
+    user_config.raw = eeconfig_read_user();
 
-    default_layer_set(_LS_BASE);
-    layer_state_set(_LS_BASE);
+    my_init(); // commom codes called from eeconfig_init_user() and keyboard_post_init_user().
+}
 
-    //  party mode (for LED soldering test. Enable rainbow color effect, and disable led_indicator to check all LEDs)
-    rgb_matrix_mode(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
-    led_indicator_enable = false;
+void toggle_isSingleBass(void) {
+    user_config.isSingleBass = !user_config.isSingleBass;
+
+    eeconfig_update_user(user_config.raw);
+}
+
+void toggle_MIDI_channel_separation(void) {
+    if (midi_chord_ch > DEFAULT_MAIN_CH_NUMBER) {
+        midi_chord_ch = DEFAULT_MAIN_CH_NUMBER;
+        midi_bass_ch  = DEFAULT_MAIN_CH_NUMBER;
+    } else {
+        midi_chord_ch = SEPARATION_CHORD_CH_NUMBER;
+        midi_bass_ch  = SEPARATION_BASS_CH_NUMBER;
+    }
+
+    user_config.chord_ch = midi_chord_ch;
+    user_config.bass_ch =  midi_bass_ch;
+    eeconfig_update_user(user_config.raw);
 }
 
 void reset_scale_indicator(void) {
@@ -410,7 +591,7 @@ void select_layer_state_set(void) {
             }
             break;
 
-        case _KEY05:  // Actually there is no separator for B_SYSTEM, C_SYSTEM and QWERTY. Used as a flag.
+        case _KEY05:  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
             if (is_trans_mode) {
                 layer_state_set(_LS_CSYSTEM_T);
             } else {
@@ -418,7 +599,11 @@ void select_layer_state_set(void) {
             }
             break;
 
-        case _KEY09:  // Actually there is no separator for B_SYSTEM, C_SYSTEM and QWERTY. Used as a flag.
+        case _KEY07:  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
+            layer_state_set(_LS_ACCORDIONBASS);
+            break;
+
+        case _KEY09:  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
             if (is_trans_mode) {
                 layer_state_set(_LS_BSYSTEM_T);
             } else {
@@ -450,7 +635,7 @@ void select_layer_state_set(void) {
             }
             break;
 
-        case _KEY31:  // Actually there is no separator for B_SYSTEM, C_SYSTEM and QWERTY. Used as a flag.
+        case _KEY31:  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
             layer_state_set(_LS_QWERTY);
             break;
 
@@ -466,6 +651,10 @@ void select_layer_state_set(void) {
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    uint16_t root_note = MIDI_INVALID_NOTE;  // Starting value for the root note of each chord
+
+    uint8_t chord        = keycode - MY_CHORD_MIN;
+
     // uprintf("keycode=%u, YM_C_3=%u, YM_Db_2 =%u, YM_MIN = %u, YM_MAX = %u\n", keycode, YM_C_3, YM_Db_2, YM_TONE_MIN, YM_TONE_MAX);
     switch (keycode) {
 
@@ -516,7 +705,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case QWERTY:
             if (record->event.pressed) {
                 reset_all();
-                key_separator_col = _KEY31;  // Actually there is no separator for B_SYSTEM, C_SYSTEM and QWERTY. Used as a flag.
+                key_separator_col = _KEY31;  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
                 select_layer_state_set();
             }
             break;
@@ -524,7 +713,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CSYSTEM:
             if (record->event.pressed) {
                 reset_all();
-                key_separator_col = _KEY05;  // Actually there is no separator for B_SYSTEM, C_SYSTEM and QWERTY. Used as a flag.
+                key_separator_col = _KEY05;  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
                 select_layer_state_set();
             }
             break;
@@ -532,7 +721,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case BSYSTEM:
             if (record->event.pressed) {
                 reset_all();
-                key_separator_col = _KEY09;  // Actually there is no separator for B_SYSTEM, C_SYSTEM and QWERTY. Used as a flag.
+                key_separator_col = _KEY09;  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
+                select_layer_state_set();
+            }
+            break;
+
+        case ACCOBAS:
+            if (record->event.pressed) {
+                reset_all();
+                key_separator_col = _KEY07;  // Actually there is no separator for B_SYSTEM, C_SYSTEM, ACCOBAS and QWERTY. Used as a flag.
                 select_layer_state_set();
             }
             break;
@@ -653,10 +850,46 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
+        case TGLBASS:
+            if (record->event.pressed) {
+                toggle_isSingleBass();
+            };
+            break;
+
+        case TGLMICH:
+            if (record->event.pressed) {
+                toggle_MIDI_channel_separation();
+            };
+            break;
+
         case  YM_TONE_MIN ... YM_TONE_MAX:  // MY tone
             // uprintf("keycode=%u, YM_C_3=%u, YM_Db_2 =%u, YM_MIN = %u, YM_MAX = %u\n", keycode, YM_C_3, YM_Db_2, YM_TONE_MIN, YM_TONE_MAX);
             //  DO NOT THROW BELOW into 'if (record->event.pressed) {}' STATEMENT SINCE IT IS USED IN THE FUNCTION BELOW.
             my_process_midi4single_note(midi_left_ch, keycode, record, my_tone_status);
+            break;
+
+        // MIDI Chord Keycodes, on the left side.
+        case MI_CH_Cr ... MI_CH_Br:  // Root Notes
+            root_note = keycode - MI_CH_Cr + MI_C_1;
+            my_process_midi4Bass(midi_bass_ch, record, chord_status, chord, root_note, IS_SINGLE_BASS());
+            break;
+
+        case MI_CH_C ... MI_CH_B:  // Major Chords
+            root_note = keycode - MI_CH_C + MI_C_2;
+            // Major Third and Fifth Notes
+            my_process_midi4DiadChords(midi_chord_ch, record, chord_status, chord, root_note, 4, 7);
+            break;
+
+        case MI_CH_Cm ... MI_CH_Bm:  // Minor Chord
+            root_note = keycode - MI_CH_Cm + MI_C_2;
+            // Minor Third and Fifth Notes
+            my_process_midi4DiadChords(midi_chord_ch, record, chord_status, chord, root_note, 3, 7);
+            break;
+
+        case MI_CH_CDom7 ... MI_CH_BDom7:  // Dominant 7th Chord
+            root_note = keycode - MI_CH_CDom7 + MI_C_2;
+            // Major Third, Major Fifth, and Minor Seventh Notes
+            my_process_midi4TriadChords(midi_chord_ch, record, chord_status, chord, root_note, 4, 7, 10);
             break;
     }
     return true;
@@ -782,9 +1015,13 @@ void rgb_matrix_indicators_user(void) {
                 rgb_matrix_set_color(led_single_col_indicator[_KEY04][0], RGB_DARKSPRINGGREEN);   //  TGLINTR
                 rgb_matrix_set_color(led_single_col_indicator[_KEY06][0], RGB_DARKSPRINGGREEN);   //  TGLCHGR
 
-                rgb_matrix_set_color(led_single_col_indicator[_KEY31][1], RGB_DARKCORAL);   //  QWERTY
-                rgb_matrix_set_color(led_single_col_indicator[_KEY05][1], RGB_DARKCORAL);   //  CSYSTEM
-                rgb_matrix_set_color(led_single_col_indicator[_KEY09][1], RGB_DARKCORAL);   //  BSYSTEM
+                rgb_matrix_set_color(led_single_col_indicator[_KEY31][1], RGB_DARKCORAL);         //  QWERTY
+                rgb_matrix_set_color(led_single_col_indicator[_KEY05][1], RGB_DARKCORAL);         //  CSYSTEM
+                rgb_matrix_set_color(led_single_col_indicator[_KEY09][1], RGB_DARKCORAL);         //  BSYSTEM
+
+                rgb_matrix_set_color(led_single_col_indicator[_KEY05][0], RGB_DARKTURQUOISE);     //  TGLBASS
+                rgb_matrix_set_color(led_single_col_indicator[_KEY07][0], RGB_DARKCORAL);         //  ACCOBAS
+                rgb_matrix_set_color(led_single_col_indicator[_KEY09][0], RGB_DARKTURQUOISE);     //  TGLMICH
 
                 for (i = 0; i < 3; i++) {
                     rgb_matrix_set_color(led_single_col_indicator[_KEY01][i], BASE_LAYER_COLOR);   //  B_BASE
@@ -806,4 +1043,4 @@ void rgb_matrix_indicators_user(void) {
         }
     }
 }
-#endif
+#endif  // RGB_MATRIX_ENABLE

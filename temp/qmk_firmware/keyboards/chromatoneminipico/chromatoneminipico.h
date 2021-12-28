@@ -122,6 +122,17 @@ enum my_key_names {
 #endif  //  RGB_MATRIX_ENABLE
 
 extern MidiDevice midi_device;
+void my_process_midi4Bass(uint8_t channel, keyrecord_t *record,
+                          uint8_t *chord_status, uint8_t chord, uint16_t root_note, bool is_single_bass);
+
+void my_process_midi4DiadChords(uint8_t channel, keyrecord_t *record,
+                                uint8_t *chord_status, uint8_t chord, uint16_t root_note,
+                                int8_t offset1, int8_t offset2);
+
+void my_process_midi4TriadChords(uint8_t channel, keyrecord_t *record,
+                                 uint8_t *chord_status, uint8_t chord, uint16_t root_note,
+                                 int8_t offset1, int8_t offset2, int8_t offset3);
+
 uint8_t shift_led_indicator_left(uint8_t scale_indicator_col);
 uint8_t shift_led_indicator_right(uint8_t scale_indicator_col);
 

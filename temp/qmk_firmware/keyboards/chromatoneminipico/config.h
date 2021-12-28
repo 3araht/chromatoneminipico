@@ -316,4 +316,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* via layer setting */
 /* default: 4 */
-#define DYNAMIC_KEYMAP_LAYER_COUNT 11
+#define DYNAMIC_KEYMAP_LAYER_COUNT 12
