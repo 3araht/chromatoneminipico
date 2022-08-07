@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "version.h"
 
 // Defines names for use in layer keycodes and the keymap
 enum layer_names {
@@ -44,7 +45,8 @@ enum custom_keycodes {
     L_RESERVE4,
     L_RESERVE5,
     L_RESERVE6,
-    L_RESERVE7
+    L_RESERVE7,
+    VERSION
 };
 
 // Long press: go to _FN layer, tap: MUTE
@@ -79,7 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX, XXXXXXX,          XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
             _______,          XXXXXXX,   XXXXXXX,     XXXXXXX,     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
             MI_VELU,               XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        MI_OCTD, MI_OCTU,     L_BASE,    XXXXXXX,     XXXXXXX,     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        MI_OCTD, MI_OCTU,     L_BASE,    XXXXXXX,     XXXXXXX,     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, VERSION, XXXXXXX, XXXXXXX,
             MI_VELD,               L_RESERVE1, L_RESERVE2, L_RESERVE3, L_RESERVE4, L_RESERVE5, L_RESERVE6, L_RESERVE7, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, EEP_RST, XXXXXXX, XXXXXXX
     ),
 
@@ -191,6 +193,11 @@ void reset_scale_indicator(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case VERSION: // Output firmware info.
+            if (record->event.pressed) {
+                SEND_STRING(QMK_KEYBOARD ":" QMK_KEYMAP " @ " QMK_VERSION " | " QMK_BUILDDATE);
+            }
+            break;
 
         case L_BASE:
             reset_scale_indicator();
