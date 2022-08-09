@@ -38,7 +38,7 @@ static uint8_t scale_indicator_col = DEFAULT_SCALE_COL;
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
-    L_BASE = SAFE_RANGE,
+    L_BASE = USER00,
     L_RESERVE1,
     L_RESERVE2,
     L_RESERVE3,

@@ -91,30 +91,9 @@ static bool led_indicator_enable = true;
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
-    SHIFT_L = SAFE_RANGE,
-    SHIFT_R,
-    TGLINDI,  //  ToGgLe INDIcator
-    TGLINTR,  //  ToGgLe INdicator location {(_KEY01, _KEY13, _KEY25, _KEY37) or (_KEY02, _KEY14, _KEY26) / (_KEY12, _KEY24, _KEY36)}in TRans mode
-    TGLTRNS,  //  ToGgLe TRaNS and shift
-    TGLCHGR,  //  ToGgLe CH GRoup
-
-    TGLBASS,  // ToGgLe BASS unison for the Accordion Bass layer.
-    TGLMICH,  // ToGgLe MIdi CHannel separation for the Accordion Bass layer.
-    ACCOBAS,  // ACCOdion BASs layer.
-    VERSION,
-
-    B_BASE,            //  border set to the left end.
-    B_LEFT,            //  border set to the 1st left octave.
-    B_CENTER,          //  border set to the center.
-    B_RIGHT,           //  border set to the 1st right octave.
-    B_FLIP,            //  border set to the right end.
-    QWERTY,
-    CSYSTEM,
-    BSYSTEM,
-
     // MY tone for _FLIPHALF and _FLIPLEFTOCT layers to distinguish the notes to avoid sustain effect, etc.
     // Since they are flipped, their subscripts are not MY_ but YM_, to make them easier to tell.
-    YM_TONE_MIN,
+    YM_TONE_MIN = SAFE_RANGE,
 
     YM_C = YM_TONE_MIN,
     YM_Cs,
@@ -330,6 +309,27 @@ enum custom_keycodes {
     MI_CH_BDim7,
 
     MY_CHORD_MAX = MI_CH_BDim7,
+
+    B_BASE,            //  border set to the left end.
+    B_LEFT,            //  border set to the 1st left octave.
+    B_CENTER,          //  border set to the center.
+    B_RIGHT,           //  border set to the 1st right octave.
+    B_FLIP,            //  border set to the right end.
+
+    SHIFT_L = USER00,
+    SHIFT_R,
+    TGLINDI,  //  ToGgLe INDIcator
+    TGLINTR,  //  ToGgLe INdicator location {(_KEY01, _KEY13, _KEY25, _KEY37) or (_KEY02, _KEY14, _KEY26) / (_KEY12, _KEY24, _KEY36)}in TRans mode
+    TGLTRNS,  //  ToGgLe TRaNS and shift
+    TGLCHGR,  //  ToGgLe CH GRoup
+
+    TGLBASS,  // ToGgLe BASS unison for the Accordion Bass layer.
+    TGLMICH,  // ToGgLe MIdi CHannel separation for the Accordion Bass layer.
+    ACCOBAS,  // ACCOdion BASs layer.
+    QWERTY,
+    CSYSTEM,
+    BSYSTEM,
+    VERSION
 };
 
 #define MY_CHORD_COUNT (MY_CHORD_MAX - MY_CHORD_MIN + 1)
