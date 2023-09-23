@@ -306,7 +306,7 @@ LED の半田付けが終わったら、他のパーツの実装には270〜320�
 
 まず qmk firmware を clone します。 clone の詳しい方法などは私よりも詳しい方が説明されている別のサイトを参考にしてください。
 
-次に、giabalanaipico のソースコードを以下のリンクからダウンロードして、 `qmk_firmware/keyboards` フォルダに chromatoneminipico フォルダごと貼り付けます。<br>
+次に、chromatoneminipico のソースコードを以下のリンクからダウンロードして、 `qmk_firmware/keyboards` フォルダに chromatoneminipico フォルダごと貼り付けます。<br>
 [こちら](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico)のソースコードをお使いください。<br>
 
 サスティン問題回避<br>
