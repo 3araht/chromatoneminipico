@@ -1,6 +1,6 @@
 # chromatoneminipico
 
-![chromatoneminipico](https://github.com/3araht/chromatoneminipico/blob/main/pictures/chromatoneminipico_toppage.jpg)
+![chromatoneminipico](https://i.imgur.com/P3XHb0Ph.jpg)
 
 chromatoneminipico keyboard is a simple-design Chromatone mini MIDI keyboard that covers 3 octaves (37 notes).
 
@@ -14,6 +14,14 @@ Make example for this keyboard (after setting up your build environment):
 
 Flashing example for this keyboard:
 
-    make chromatoneminipico:default:uf2
+    make chromatoneminipico:default:flash
+
+Run this while Raspberry Pi Pico is in bootloader mode.
+## Bootloader
+
+Enter the bootloader in 2 ways:
+
+* **Physical reset button**: Briefly double-tap the reset button on the side of the PCB
+* **Physical BOOTSEL button**: Press the BOOTSEL button and hold it while you connect a micro USB cable to your computer.
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).

@@ -299,103 +299,56 @@ LED の半田付けが終わったら、他のパーツの実装には270〜320�
 ## 付録 ##
 ### 10.1 ###
 ### コーディングされる場合の手順 ###
-2021/11/7現在、QMK はまだ Raspberry Pi Pico に完全対応していません。<br>
-暫定策として、せきごんさんが pico-sdk を使った方法を開拓してくださいました。<br>
-[せきごんさんのサイト](https://scrapbox.io/self-made-kbds-ja/RP2040%E5%AF%BE%E5%BF%9C%E3%81%AEQMK(%E9%9D%9E%E5%85%AC%E5%BC%8F)%E3%82%92%E5%8B%95%E3%81%8B%E3%81%99)<br>
-この場を借りて せきごん さんに改めて感謝致します。<br>
-なお、冒頭に書かれているように、QMK公式が対応するまでの暫定版、という位置付けらしいです。現状開示いただいている状態での活用を心がけています。せきごんさんに迷惑がかからないように、問い合わせなどはしないようにしましょう。<br>
-また、私も手探り状態で試してうまく行った事例を紹介してますが、もしかしたら間違ったやり方をしている可能性があります。ここで紹介する手順は、あまり自信が無い状態での情報シェアであることはご留意ください。<br>
-(コンパイル済みのものは問題無く動いているので大丈夫だと思うのですが。。。)
 
 #### 10.1.1 ####
 #### コーディングされる場合の環境準備 ####
-まず、 [せきごんさんのサイト](https://scrapbox.io/self-made-kbds-ja/RP2040%E5%AF%BE%E5%BF%9C%E3%81%AEQMK(%E9%9D%9E%E5%85%AC%E5%BC%8F)%E3%82%92%E5%8B%95%E3%81%8B%E3%81%99)に従って、 pico-sdk や せきごんさん が準備された qmk_firmware を準備します。<br>
-「前準備」と「セットアップの確認」まで進めます。<br>
-尚、pico-sdk の環境がちゃんと準備できているか確認するためにも、[Raspberry Pi Pico のドキュメント](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf)を参考に、Lチカ のサンプル(blink というサンプルです)を使って確認しておくと良いと思います。<br>
+※2023/9/23 現在、qmk 0.22.2 で動作確認しています。
 
-その後、qmk_firmware のフォルダでsubmodule の準備をしておきます。<br>
-```
-$ make git-submodule
-```
+まず qmk firmware を clone します。 clone の詳しい方法などは私よりも詳しい方が説明されている別のサイトを参考にしてください。
 
-次に、chromatoneminipico のソースコードを以下のリンクからダウンロードして、 qmk_firmware/keyboards フォルダに chromatoneminipico フォルダごと貼り付けます。<br>
+次に、giabalanaipico のソースコードを以下のリンクからダウンロードして、 `qmk_firmware/keyboards` フォルダに chromatoneminipico フォルダごと貼り付けます。<br>
 [こちら](https://github.com/3araht/chromatoneminipico/blob/main/temp/qmk_firmware/keyboards/chromatoneminipico)のソースコードをお使いください。<br>
 
 サスティン問題回避<br>
 MIDIソフトによっては、同じ音を重ねて鳴らしたときにその音にUSBケーブルを抜き差しするまでサスティンがかかってしまう現象がありました。
 ~~対策方法がわかりましたので、それを適用します（こちらも pull request 中。正式に採用されるまでの暫定対策）。
 2020/10/5 pull request が メインブランチにマージされました。最新のソフトを clone いただければOKです。~~<br>
-2021/04/13 残念ながら、2021/3/25 の process_midi.c の更新により、再びこの問題が復活しています。
-コンパイル前に以下のコマンドでエンバグ前のコードを引っ張り出してコンパイルしてください。
+2021/04/13 残念ながら、2021/3/25 の `process_midi.c` の更新により、再びこの問題が復活しています。<br>
+2023/09/23 以下の Pull Request から下記ファイルを取得し、`process_midi.c` を差し替えてください。
+
+https://github.com/qmk/qmk_firmware/pull/22114
+https://github.com/qmk/qmk_firmware/blob/e8906ed2ea0b9f20291b2759d4d65fc6c334ab39/quantum/process_keycode/process_midi.c
+
 ```
-$ git checkout c66df16 quantum/process_keycode/process_midi.c
+quantum/process_keycode/process_midi.c
 ```
 
+ちなみに上記 Pull Request は Reject されることが予想されます。`process_midi.c` は別の方の使用目的と conflict しているようです。
+
 #### 10.1.2 ####
+#### カスタマイズ ####
+キーマップの変更など、自由にカスタマイズしてください。
+
+#### 10.1.3 ####
 #### コンパイル ####
 qmk_firmware のフォルダで以下のコマンドを実行すると、
 ```
-$ make chromatoneminipico:led:uf2
+$ make chromatoneminipico:led
 ```
 
-Raspberry Pi Pico をブートローダ状態にしたときにドラッグ＆ドロップでファームウェアを書き込める uf2 ファイルが出来上がる。。。はずなのですが、
-以下のようなエラーが出るかもしれません。(私の環境では出ました。)<br>
-```
-Assembler messages:
-Fatal error: can't create .build/obj_chromatoneminipico/src/bs2_default.o: No such file or directory
-make[1]: *** [.build/obj_chromatoneminipico/src/bs2_default.o] Error 1
-make: *** [chromatoneminipico:led:uf2] Error 1
-Make finished with errors
-```
-
-その場合は、以下のようにシンボリックリンクを張るとコンパイルが通るようになりました。<br>
-```
-(qmk_firmware のフォルダにいる状態から)
-$ make rp2040_example:default
-cd .build/obj_chromatoneminipico
-ln -s ../obj_rp2040_example/src .
-cd -
-```
-
-このリンクが張れるようにするには、その前に rp2040_example のコンパイルを実施しておく必要があります. 以下はそのためです。<br>
-```
-$ make rp2040_example:default
-```
-
-（ちょっと原因がわかっていないのですが、最初は obj_rp2040_example/src が生成されていたのですが、何度かやっていくうちに生成されなくなってしまいました。。。もしobj_rp2040_example/src が生成されない場合は、qmk_firmware のクローンからやり直すとうまく行くかもしれません。）
-
-次に以下のエラーがでてきたら、<br>
-```
-Traceback (most recent call last):
-  File "<path-to-your-qmk-folder>/qmk_firmware/./util/uf2conv.py", line 292, in <module>
-    main()
-  File "<path-to-your-qmk-folder>/qmk_firmware/./util/uf2conv.py", line 258, in main
-    with open(args.input, mode='rb') as f:
-FileNotFoundError: [Errno 2] No such file or directory: 'chromatoneminipico_led.bin'
-make[1]: *** [uf2] Error 1
-make: *** [chromatoneminipico:led:uf2] Error 1
-```
-
-tmk_core/pico.mk を少し修正します。<br>
-
-```
-./util/uf2conv.py -f 0xe48bff56 -b 0x10000000 -o $(TARGET).uf2 $(TARGET).bin
-->
-./util/uf2conv.py -f 0xe48bff56 -b 0x10000000 -o $(TARGET).uf2 $(BUILD_DIR)/$(TARGET).bin
-```
-
-これでコンパイルが通るようになり、 uf2 ファイルが出来上がったと思います。<br>
-ワーニングはまあまあ出てきます。が、とりあえずそのままで動きました。<br>
+Raspberry Pi Pico をブートローダ状態にしたときにドラッグ＆ドロップでファームウェアを書き込める uf2 ファイルが出来上がるはずです。<br>
+（この例では、led というキーマップのファームをコンパイルした例になります。）<br>
 
 なお、ファームウェアの書き込みですが、以下のコマンドを実装するときに Raspberry Pi Pico をブートローダ状態にしておくと、自動で uf2 ファイルを Raspberry Pi Pico に書き込んでくれました。<br>
 ```
-$ make chromatoneminipico:led:uf2
+$ make chromatoneminipico:led:flash
 (実行後、長いコンパイルの後、)
+Flashing for bootloader: rp2040
 Flashing /Volumes/RPI-RP2 (RPI-RP2)
-Wrote 130560 bytes to /Volumes/RPI-RP2/NEW.UF2.
+Wrote 113664 bytes to /Volumes/RPI-RP2/NEW.UF2
 ```
 
-#### 10.1.3 ####
+#### 10.1.4 ####
 #### 初期キー配列の初期化 ####
 ファームウェアを書き込んだ後は、[REMAP を使った初期キー配列の初期化](#32) を参考にしてキー配列を初期化してください。<br>
 

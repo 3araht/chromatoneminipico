@@ -1,4 +1,4 @@
-/* Copyright 2021 3araht
+/* Copyright 2022 3araht
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -316,7 +316,7 @@ enum custom_keycodes {
     B_RIGHT,           //  border set to the 1st right octave.
     B_FLIP,            //  border set to the right end.
 
-    SHIFT_L = USER00,
+    SHIFT_L = QK_KB_0,
     SHIFT_R,
     TGLINDI,  //  ToGgLe INDIcator
     TGLINTR,  //  ToGgLe INdicator location {(_KEY01, _KEY13, _KEY25, _KEY37) or (_KEY02, _KEY14, _KEY26) / (_KEY12, _KEY24, _KEY36)}in TRans mode
@@ -340,7 +340,7 @@ static uint8_t my_tone_status[MY_TONE_COUNT];
 // Long press: go to _FN layer, tap: MUTE
 #define FN_MUTE LT(_FN, KC_MUTE)
 
-// Used to set octave to MI_OCT_0
+// Used to set octave to QK_MIDI_OCTAVE_0
 extern midi_config_t midi_config;
 static bool is_trans_mode = false;     //  By default, shift mode is chosen.
 
@@ -362,136 +362,166 @@ static uint8_t key_separator_col = _KEY01;  //  (_KEY01 .. _KEY37).     By defau
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base */
     [_BASE] = LAYOUT(
-            MI_SUS,          MI_C_2, MI_D_2, MI_E_2,  MI_Fs_2, MI_Ab_2, MI_Bb_2, MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-        KC_VOLD, KC_VOLU,       MI_Db_2, MI_Eb_2, MI_F_2,  MI_G_2,  MI_A_2,  MI_B_2, MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-            FN_MUTE,         MI_C_2, MI_D_2, MI_E_2,  MI_Fs_2, MI_Ab_2, MI_Bb_2, MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            MI_BENDU,           MI_Db_2, MI_Eb_2, MI_F_2,  MI_G_2,  MI_A_2,  MI_B_2, MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-        SHIFT_L, SHIFT_R,    MI_C_2, MI_D_2, MI_E_2,  MI_Fs_2, MI_Ab_2, MI_Bb_2, MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            MI_BENDD,           MI_Db_2, MI_Eb_2, MI_F_2,  MI_G_2,  MI_A_2,  MI_B_2, MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4
+            MI_SUST,          MI_C2, MI_D2, MI_E2,  MI_Fs2, MI_Ab2, MI_Bb2, MI_C3, MI_D3, MI_E3, MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+                                MI_Db2, MI_Eb2, MI_F2,  MI_G2,  MI_A2,  MI_B2, MI_Db3, MI_Eb3, MI_F3,  MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+            FN_MUTE,         MI_C2, MI_D2, MI_E2,  MI_Fs2, MI_Ab2, MI_Bb2, MI_C3, MI_D3, MI_E3, MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            MI_BNDU,           MI_Db2, MI_Eb2, MI_F2,  MI_G2,  MI_A2,  MI_B2, MI_Db3, MI_Eb3, MI_F3,  MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+        SHIFT_L, SHIFT_R,    MI_C2, MI_D2, MI_E2,  MI_Fs2, MI_Ab2, MI_Bb2, MI_C3, MI_D3, MI_E3, MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            MI_BNDD,           MI_Db2, MI_Eb2, MI_F2,  MI_G2,  MI_A2,  MI_B2, MI_Db3, MI_Eb3, MI_F3,  MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4
     ),
 
     /* 1 octave on the left side is ch2, others are ch1 (normal) */
     [_SEPALEFTOCT] = LAYOUT(
-            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2,     MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-        _______, _______,        YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2,     MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2,     MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            _______,             YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2,     MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-        SHIFT_L, SHIFT_R,     YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2,     MI_C_3, MI_D_3, MI_E_3, MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            _______,             YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2,     MI_Db_3, MI_Eb_3, MI_F_3,  MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4
+            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2,     MI_C3, MI_D3, MI_E3, MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+                                YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2,     MI_Db3, MI_Eb3, MI_F3,  MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2,     MI_C3, MI_D3, MI_E3, MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            _______,            YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2,     MI_Db3, MI_Eb3, MI_F3,  MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+        SHIFT_L, SHIFT_R,     YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2,     MI_C3, MI_D3, MI_E3, MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            _______,            YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2,     MI_Db3, MI_Eb3, MI_F3,  MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4
     ),
 
     /* Half ch2, half ch1 (normal) */
     [_SEPAHALF] = LAYOUT(
-            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3,       MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-        _______, _______,        YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,    MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3,       MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            _______,             YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,    MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-        SHIFT_L, SHIFT_R,     YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3,       MI_Fs_3, MI_Ab_3, MI_Bb_3, MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            _______,             YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,    MI_G_3, MI_A_3,  MI_B_3, MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4
+            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3,       MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+                                YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,    MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3,       MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            _______,            YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,    MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+        SHIFT_L, SHIFT_R,     YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3,       MI_Fs3, MI_Ab3, MI_Bb3, MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            _______,            YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,    MI_G3, MI_A3,  MI_B3, MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4
     ),
 
     /* 2 octave on the left side is ch2, others are ch1 (normal) */
     [_SEPARIGHTOCT] = LAYOUT(
-            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3, YM_Fs_3, YM_Ab_3, YM_Bb_3,      MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-        _______, _______,        YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,  YM_G_3, YM_A_3,  YM_B_3,     MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3, YM_Fs_3, YM_Ab_3, YM_Bb_3,      MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            _______,             YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,  YM_G_3, YM_A_3,  YM_B_3,     MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4,
-        SHIFT_L, SHIFT_R,     YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3, YM_Fs_3, YM_Ab_3, YM_Bb_3,      MI_C_4,  MI_D_4,  MI_E_4, MI_Fs_4, MI_Ab_4, MI_Bb_4, MI_C_5,
-            _______,             YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,  YM_G_3, YM_A_3,  YM_B_3,     MI_Db_4, MI_Eb_4, MI_F_4,  MI_G_4,  MI_A_4,  MI_B_4
+            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3, YM_Fs_3, YM_Ab_3, YM_Bb_3,      MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+                                YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,  YM_G_3, YM_A_3,  YM_B_3,     MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+            _______,          YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3, YM_Fs_3, YM_Ab_3, YM_Bb_3,      MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            _______,            YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,  YM_G_3, YM_A_3,  YM_B_3,     MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4,
+        SHIFT_L, SHIFT_R,     YM_C_2, YM_D_2, YM_E_2,  YM_Fs_2, YM_Ab_2, YM_Bb_2, YM_C_3, YM_D_3, YM_E_3, YM_Fs_3, YM_Ab_3, YM_Bb_3,      MI_C4,  MI_D4,  MI_E4, MI_Fs4, MI_Ab4, MI_Bb4, MI_C5,
+            _______,            YM_Db_2, YM_Eb_2, YM_F_2,  YM_G_2,  YM_A_2,  YM_B_2, YM_Db_3, YM_Eb_3, YM_F_3,  YM_G_3, YM_A_3,  YM_B_3,     MI_Db4, MI_Eb4, MI_F4,  MI_G4,  MI_A4,  MI_B4
     ),
 
     /* C-System chromatic accordion */
     [_CSYSTEM] = LAYOUT(
-            _______,         MI_D_1,  MI_F_1,  MI_Ab_1, MI_B_1,  MI_D_2,  MI_F_2,  MI_Ab_2, MI_B_2,  MI_D_3,  MI_F_3,  MI_Ab_3, MI_B_3,  MI_D_4,  MI_F_4,  MI_Ab_4, MI_B_4,  MI_D_5,  MI_F_5,  MI_Ab_5,
-        _______, _______,       MI_E_1,  MI_G_1,  MI_Bb_1, MI_Db_2, MI_E_2,   MI_G_2,  MI_Bb_2, MI_Db_3, MI_E_3,  MI_G_3,  MI_Bb_3, MI_Db_4, MI_E_4,  MI_G_4,  MI_Bb_4, MI_Db_5, MI_E_5,  MI_G_5,
-            _______,         MI_Eb_1, MI_Fs_1, MI_A_1,  MI_C_2,  MI_Eb_2, MI_Fs_2, MI_A_2,  MI_C_3,  MI_Eb_3, MI_Fs_3, MI_A_3,  MI_C_4,  MI_Eb_4, MI_Fs_4, MI_A_4,  MI_C_5,  MI_Eb_5, MI_Fs_5, MI_A_5,
-            _______,            MI_F_1,  MI_Ab_1, MI_B_1,  MI_D_2,  MI_F_2,   MI_Ab_2, MI_B_2,  MI_D_3,  MI_F_3,  MI_Ab_3, MI_B_3,  MI_D_4,  MI_F_4,  MI_Ab_4, MI_B_4,  MI_D_5,  MI_F_5,  MI_Ab_5,
-        SHIFT_L, SHIFT_R,    MI_E_1,  MI_G_1,  MI_Bb_1, MI_Db_2, MI_E_2,  MI_G_2,  MI_Bb_2, MI_Db_3, MI_E_3,  MI_G_3,  MI_Bb_3, MI_Db_4, MI_E_4,  MI_G_4,  MI_Bb_4, MI_Db_5, MI_E_5,  MI_G_5,  MI_Bb_5,
-            _______,            MI_Fs_1, MI_A_1,  MI_C_2,  MI_Eb_2, MI_Fs_2,  MI_A_2,  MI_C_3,  MI_Eb_3, MI_Fs_3, MI_A_3,  MI_C_4,  MI_Eb_4, MI_Fs_4, MI_A_4,  MI_C_5,  MI_Eb_5, MI_Fs_5, MI_A_5
+            _______,         MI_D1,  MI_F1,  MI_Ab1, MI_B1,  MI_D2,  MI_F2,  MI_Ab2, MI_B2,  MI_D3,  MI_F3,  MI_Ab3, MI_B3,  MI_D4,  MI_F4,  MI_Ab4, MI_B4,  MI_D5,  MI_F5,  MI_Ab5,
+                                MI_E1,  MI_G1,  MI_Bb1, MI_Db2, MI_E2,   MI_G2,  MI_Bb2, MI_Db3, MI_E3,  MI_G3,  MI_Bb3, MI_Db4, MI_E4,  MI_G4,  MI_Bb4, MI_Db5, MI_E5,  MI_G5,
+            _______,         MI_Eb1, MI_Fs1, MI_A1,  MI_C2,  MI_Eb2, MI_Fs2, MI_A2,  MI_C3,  MI_Eb3, MI_Fs3, MI_A3,  MI_C4,  MI_Eb4, MI_Fs4, MI_A4,  MI_C5,  MI_Eb5, MI_Fs5, MI_A5,
+            _______,            MI_F1,  MI_Ab1, MI_B1,  MI_D2,  MI_F2,   MI_Ab2, MI_B2,  MI_D3,  MI_F3,  MI_Ab3, MI_B3,  MI_D4,  MI_F4,  MI_Ab4, MI_B4,  MI_D5,  MI_F5,  MI_Ab5,
+        SHIFT_L, SHIFT_R,    MI_E1,  MI_G1,  MI_Bb1, MI_Db2, MI_E2,  MI_G2,  MI_Bb2, MI_Db3, MI_E3,  MI_G3,  MI_Bb3, MI_Db4, MI_E4,  MI_G4,  MI_Bb4, MI_Db5, MI_E5,  MI_G5,  MI_Bb5,
+            _______,            MI_Fs1, MI_A1,  MI_C2,  MI_Eb2, MI_Fs2,  MI_A2,  MI_C3,  MI_Eb3, MI_Fs3, MI_A3,  MI_C4,  MI_Eb4, MI_Fs4, MI_A4,  MI_C5,  MI_Eb5, MI_Fs5, MI_A5
     ),
 
     /* B-System chromatic accordion */
     [_BSYSTEM] = LAYOUT(
-            _______,         MI_C_1,  MI_Eb_1, MI_Gb_1, MI_A_1,  MI_C_2,  MI_Eb_2, MI_Gb_2, MI_A_2,  MI_C_3,  MI_Eb_3, MI_Gb_3, MI_A_3,  MI_C_4,  MI_Eb_4, MI_Gb_4,  MI_A_4,  MI_C_5, MI_Eb_5, MI_Gb_5,
-        _______, _______,       MI_Db_1, MI_E_1,  MI_G_1,  MI_Bb_1, MI_Db_2, MI_E_2,  MI_G_2,   MI_Bb_2, MI_Db_3, MI_E_3,  MI_G_3,  MI_Bb_3, MI_Db_4, MI_E_4,  MI_G_4,   MI_Bb_4, MI_Db_5, MI_E_5,
-            _______,         MI_B,  MI_D_1,  MI_F_1,  MI_Ab_1, MI_B_1,  MI_D_2,  MI_F_2,  MI_Ab_2, MI_B_2,  MI_D_3,  MI_F_3,  MI_Ab_3, MI_B_3,  MI_D_4,  MI_F_4,  MI_Ab_4, MI_B_4,  MI_D_5,  MI_F_5,
-            _______,            MI_C_1,  MI_Eb_1, MI_Gb_1, MI_A_1,  MI_C_2,  MI_Eb_2, MI_Gb_2,  MI_A_2,  MI_C_3,  MI_Eb_3, MI_Gb_3, MI_A_3,  MI_C_4,  MI_Eb_4, MI_Gb_4,  MI_A_4,  MI_C_5,  MI_Eb_5,
-        SHIFT_L, SHIFT_R,    MI_Bb, MI_Db_1, MI_E_1,  MI_G_1,  MI_Bb_1, MI_Db_2, MI_E_2,  MI_G_2,  MI_Bb_2, MI_Db_3, MI_E_3,  MI_G_3,  MI_Bb_3, MI_Db_4, MI_E_4,  MI_G_4,  MI_Bb_4, MI_Db_5, MI_E_5,
-            _______,            MI_B,  MI_D_1,  MI_F_1,  MI_Ab_1, MI_B_1,  MI_D_2,  MI_F_2,   MI_Ab_2, MI_B_2,  MI_D_3,  MI_F_3,  MI_Ab_3, MI_B_3,  MI_D_4,  MI_F_4,   MI_Ab_4, MI_B_4,  MI_D_5
+            _______,         MI_C1,  MI_Eb1, MI_Gb1, MI_A1,  MI_C2,  MI_Eb2, MI_Gb2, MI_A2,  MI_C3,  MI_Eb3, MI_Gb3, MI_A3,  MI_C4,  MI_Eb4, MI_Gb4,  MI_A4,  MI_C5, MI_Eb5, MI_Gb5,
+                                MI_Db1, MI_E1,  MI_G1,  MI_Bb1, MI_Db2, MI_E2,  MI_G2,   MI_Bb2, MI_Db3, MI_E3,  MI_G3,  MI_Bb3, MI_Db4, MI_E4,  MI_G4,   MI_Bb4, MI_Db5, MI_E5,
+            _______,         MI_B,  MI_D1,  MI_F1,  MI_Ab1, MI_B1,  MI_D2,  MI_F2,  MI_Ab2, MI_B2,  MI_D3,  MI_F3,  MI_Ab3, MI_B3,  MI_D4,  MI_F4,  MI_Ab4, MI_B4,  MI_D5,  MI_F5,
+            _______,            MI_C1,  MI_Eb1, MI_Gb1, MI_A1,  MI_C2,  MI_Eb2, MI_Gb2,  MI_A2,  MI_C3,  MI_Eb3, MI_Gb3, MI_A3,  MI_C4,  MI_Eb4, MI_Gb4,  MI_A4,  MI_C5,  MI_Eb5,
+        SHIFT_L, SHIFT_R,    MI_Bb, MI_Db1, MI_E1,  MI_G1,  MI_Bb1, MI_Db2, MI_E2,  MI_G2,  MI_Bb2, MI_Db3, MI_E3,  MI_G3,  MI_Bb3, MI_Db4, MI_E4,  MI_G4,  MI_Bb4, MI_Db5, MI_E5,
+            _______,            MI_B,  MI_D1,  MI_F1,  MI_Ab1, MI_B1,  MI_D2,  MI_F2,   MI_Ab2, MI_B2,  MI_D3,  MI_F3,  MI_Ab3, MI_B3,  MI_D4,  MI_F4,   MI_Ab4, MI_B4,  MI_D5
     ),
 
     /* TRANS   This layer must locate 1 layer below _FN layer. */
     [_TRANS] = LAYOUT(
-            _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        MI_TRNSD, MI_TRNSU,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+            _______,         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+            _______,         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+            _______,            _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        MI_TRSD, MI_TRSU,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+            _______,            _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
     /* Flip Base    SFIFTUP and SHIFT_L are swapped. */
     [_FLIPBASE] = LAYOUT(
-            MI_SUS,           MI_C_5, MI_Bb_4, MI_Ab_4,  MI_Fs_4, MI_E_4, MI_D_4, MI_C_4, MI_Bb_3, MI_Ab_3, MI_Fs_3, MI_E_3, MI_D_3, MI_C_3,  MI_Bb_2,  MI_Ab_2, MI_Fs_2, MI_E_2, MI_D_2, MI_C_2,
-        _______, _______,       MI_B_4, MI_A_4, MI_G_4,  MI_F_4,  MI_Eb_4,  MI_Db_4, MI_B_3, MI_A_3, MI_G_3,  MI_F_3, MI_Eb_3,  MI_Db_3, MI_B_2, MI_A_2, MI_G_2,  MI_F_2,  MI_Eb_2,  MI_Db_2,
-            _______,          MI_C_5, MI_Bb_4, MI_Ab_4,  MI_Fs_4, MI_E_4, MI_D_4, MI_C_4, MI_Bb_3, MI_Ab_3, MI_Fs_3, MI_E_3, MI_D_3, MI_C_3,  MI_Bb_2,  MI_Ab_2, MI_Fs_2, MI_E_2, MI_D_2, MI_C_2,
-            MI_BENDU,           MI_B_4, MI_A_4, MI_G_4,  MI_F_4,  MI_Eb_4,  MI_Db_4, MI_B_3, MI_A_3, MI_G_3,  MI_F_3, MI_Eb_3,  MI_Db_3, MI_B_2, MI_A_2, MI_G_2,  MI_F_2,  MI_Eb_2,  MI_Db_2,
-        SHIFT_L, SHIFT_R,     MI_C_5, MI_Bb_4, MI_Ab_4,  MI_Fs_4, MI_E_4, MI_D_4, MI_C_4, MI_Bb_3, MI_Ab_3, MI_Fs_3, MI_E_3, MI_D_3, MI_C_3,  MI_Bb_2,  MI_Ab_2, MI_Fs_2, MI_E_2, MI_D_2, MI_C_2,
-            MI_BENDD,           MI_B_4, MI_A_4, MI_G_4,  MI_F_4,  MI_Eb_4,  MI_Db_4, MI_B_3, MI_A_3, MI_G_3,  MI_F_3, MI_Eb_3,  MI_Db_3, MI_B_2, MI_A_2, MI_G_2,  MI_F_2,  MI_Eb_2,  MI_Db_2
+            MI_SUST,           MI_C5, MI_Bb4, MI_Ab4,  MI_Fs4, MI_E4, MI_D4, MI_C4, MI_Bb3, MI_Ab3, MI_Fs3, MI_E3, MI_D3, MI_C3,  MI_Bb2,  MI_Ab2, MI_Fs2, MI_E2, MI_D2, MI_C2,
+                                MI_B4, MI_A4, MI_G4,  MI_F4,  MI_Eb4,  MI_Db4, MI_B3, MI_A3, MI_G3,  MI_F3, MI_Eb3,  MI_Db3, MI_B2, MI_A2, MI_G2,  MI_F2,  MI_Eb2,  MI_Db2,
+            _______,          MI_C5, MI_Bb4, MI_Ab4,  MI_Fs4, MI_E4, MI_D4, MI_C4, MI_Bb3, MI_Ab3, MI_Fs3, MI_E3, MI_D3, MI_C3,  MI_Bb2,  MI_Ab2, MI_Fs2, MI_E2, MI_D2, MI_C2,
+            MI_BNDU,           MI_B4, MI_A4, MI_G4,  MI_F4,  MI_Eb4,  MI_Db4, MI_B3, MI_A3, MI_G3,  MI_F3, MI_Eb3,  MI_Db3, MI_B2, MI_A2, MI_G2,  MI_F2,  MI_Eb2,  MI_Db2,
+        SHIFT_L, SHIFT_R,     MI_C5, MI_Bb4, MI_Ab4,  MI_Fs4, MI_E4, MI_D4, MI_C4, MI_Bb3, MI_Ab3, MI_Fs3, MI_E3, MI_D3, MI_C3,  MI_Bb2,  MI_Ab2, MI_Fs2, MI_E2, MI_D2, MI_C2,
+            MI_BNDD,           MI_B4, MI_A4, MI_G4,  MI_F4,  MI_Eb4,  MI_Db4, MI_B3, MI_A3, MI_G3,  MI_F3, MI_Eb3,  MI_Db3, MI_B2, MI_A2, MI_G2,  MI_F2,  MI_Eb2,  MI_Db2
     ),
 
-    /* Flip Trans   This layer must locate 1 layer above _FLIPBASE layer.  MI_TRNSU and MI_TRNSD are swapped. */
+    /* Flip Trans   This layer must locate 1 layer above _FLIPBASE layer.  MI_TRSU and MI_TRSD are swapped. */
     [_FLIPTRANS] = LAYOUT(
             _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
             _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        MI_TRNSU, MI_TRNSD,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-            _______,               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+            _______,            _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        MI_TRSU, MI_TRSD,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+            _______,            _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
     /* Accordion Bass */
     [_ACCORDIONBASS] = LAYOUT(
-            MI_SUS,          MI_CH_Ar,  MI_CH_Er,    MI_CH_Br,     MI_CH_Gbr,    MI_CH_Dbr,    MI_CH_Abr,    MI_CH_Ebr,   MI_CH_Bbr  , MI_CH_Fr,    MI_CH_Cr,    MI_CH_Gr,    MI_CH_Dr,    MI_CH_Ar,    MI_CH_Er,    MI_CH_Br,     MI_CH_Gbr,    MI_CH_Dbr,    MI_CH_Abr,  MI_CH_Ebr,
-        _______, _______,         MI_CH_Fr,  MI_CH_Cr,     MI_CH_Gr,     MI_CH_Dr,     MI_CH_Ar,     MI_CH_Er,     MI_CH_Br,    MI_CH_Fsr,   MI_CH_Csr,   MI_CH_Gsr,   MI_CH_Dsr,   MI_CH_Asr,   MI_CH_Fr,    MI_CH_Cr,     MI_CH_Gr,     MI_CH_Dr,     MI_CH_Ar,     MI_CH_Er,
+            MI_SUST,          MI_CH_Ar,  MI_CH_Er,    MI_CH_Br,     MI_CH_Gbr,    MI_CH_Dbr,    MI_CH_Abr,    MI_CH_Ebr,   MI_CH_Bbr  , MI_CH_Fr,    MI_CH_Cr,    MI_CH_Gr,    MI_CH_Dr,    MI_CH_Ar,    MI_CH_Er,    MI_CH_Br,     MI_CH_Gbr,    MI_CH_Dbr,    MI_CH_Abr,  MI_CH_Ebr,
+                                MI_CH_Fr,  MI_CH_Cr,     MI_CH_Gr,     MI_CH_Dr,     MI_CH_Ar,     MI_CH_Er,     MI_CH_Br,    MI_CH_Fsr,   MI_CH_Csr,   MI_CH_Gsr,   MI_CH_Dsr,   MI_CH_Asr,   MI_CH_Fr,    MI_CH_Cr,     MI_CH_Gr,     MI_CH_Dr,     MI_CH_Ar,     MI_CH_Er,
             FN_MUTE,         MI_CH_Gbr, MI_CH_Dbr,   MI_CH_Abr,    MI_CH_Ebr,    MI_CH_Bbr,    MI_CH_Fr,     MI_CH_Cr,    MI_CH_Gr,    MI_CH_Dr,    MI_CH_Ar,    MI_CH_Er,    MI_CH_Br,    MI_CH_Fsr,   MI_CH_Csr,   MI_CH_Gsr,    MI_CH_Dsr,    MI_CH_Asr,    MI_CH_Fr,   MI_CH_Cr,
-            MI_OCTU,              MI_CH_Gb,  MI_CH_Db,     MI_CH_Ab,     MI_CH_Eb,     MI_CH_Bb,     MI_CH_F,      MI_CH_C,     MI_CH_G,     MI_CH_D,     MI_CH_A,     MI_CH_E,     MI_CH_B,     MI_CH_Fs,    MI_CH_Cs,     MI_CH_Gs,     MI_CH_Ds,     MI_CH_As,     MI_CH_F,
+            MI_OCTU,            MI_CH_Gb,  MI_CH_Db,     MI_CH_Ab,     MI_CH_Eb,     MI_CH_Bb,     MI_CH_F,      MI_CH_C,     MI_CH_G,     MI_CH_D,     MI_CH_A,     MI_CH_E,     MI_CH_B,     MI_CH_Fs,    MI_CH_Cs,     MI_CH_Gs,     MI_CH_Ds,     MI_CH_As,     MI_CH_F,
         MI_VELD, MI_VELU,    MI_CH_Bm,  MI_CH_Gbm,   MI_CH_Dbm,    MI_CH_Abm,    MI_CH_Ebm,    MI_CH_Bbm,    MI_CH_Fm,    MI_CH_Cm,    MI_CH_Gm,    MI_CH_Dm,    MI_CH_Am,    MI_CH_Em,    MI_CH_Bm,    MI_CH_Fsm,   MI_CH_Csm,    MI_CH_Gsm,    MI_CH_Dsm,    MI_CH_Asm,  MI_CH_Fm,
             MI_OCTD,            MI_CH_BDom7, MI_CH_GbDom7, MI_CH_DbDom7, MI_CH_AbDom7, MI_CH_EbDom7, MI_CH_BbDom7, MI_CH_FDom7, MI_CH_CDom7, MI_CH_GDom7, MI_CH_DDom7, MI_CH_ADom7, MI_CH_EDom7, MI_CH_BDom7, MI_CH_FsDom7, MI_CH_CsDom7, MI_CH_GsDom7, MI_CH_DsDom7, MI_CH_AsDom7
     ),
 
     [_QWERTY] = LAYOUT(
-            XXXXXXX,          KC_GESC, KC_F1,   KC_F2,   KC_F3,   KC_F4,    KC_F5,  KC_F6,  KC_F7,  KC_F8,   KC_F9,   KC_F10,  KC_F11,   KC_F12,  KC_F13,  KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,
-        _______, _______,        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,     KC_6,   KC_7,   KC_8,   KC_9,      KC_0,    KC_MINS, KC_EQL,   KC_BSLS, KC_BSPC, KC_PSCR, KC_SLCK, KC_PAUS, KC_INS,
-            _______,          KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,   KC_Y,   KC_U,   KC_I,    KC_O,    KC_P,    KC_LBRC,  KC_RBRC, KC_PSLS, KC_BSPC, KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS,
-            KC_UP,               KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,     KC_G,   KC_H,   KC_J,   KC_K,      KC_L,    KC_SCLN, KC_QUOT,  KC_ENT,  KC_ENT,  KC_P7,   KC_P8,   KC_P9,   KC_PPLS,
+            XXXXXXX,          QK_GESC, KC_F1,   KC_F2,   KC_F3,   KC_F4,    KC_F5,  KC_F6,  KC_F7,  KC_F8,   KC_F9,   KC_F10,  KC_F11,   KC_F12,  KC_F13,  KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,
+                                KC_1,    KC_2,    KC_3,    KC_4,    KC_5,     KC_6,   KC_7,   KC_8,   KC_9,      KC_0,    KC_MINS, KC_EQL,   KC_BSLS, KC_BSPC, KC_PSCR, KC_SCRL, KC_PAUS, KC_INS,
+            _______,          KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,   KC_Y,   KC_U,   KC_I,    KC_O,    KC_P,    KC_LBRC,  KC_RBRC, KC_PSLS, KC_BSPC, KC_NUM, KC_PSLS, KC_PAST, KC_PMNS,
+            KC_UP,              KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,     KC_G,   KC_H,   KC_J,   KC_K,      KC_L,    KC_SCLN, KC_QUOT,  KC_ENT,  KC_ENT,  KC_P7,   KC_P8,   KC_P9,   KC_PPLS,
         KC_LEFT,   KC_RGHT,   KC_CAPS, KC_LSFT, KC_Z,    KC_X,    KC_C,     KC_V,   KC_B,   KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT, KC_RSFT, KC_RSFT, KC_P4,   KC_P5,   KC_P6,   KC_PENT,
-            KC_DOWN,             KC_LCTL, KC_GRV,  KC_LGUI, KC_LALT, KC_LANG2, KC_SPC, KC_SPC, KC_SPC, KC_LANG1,  KC_APP,  KC_RALT, KC_RGUI,  KC_RCTL, KC_P0,   KC_P1,   KC_P2,   KC_P3,   KC_PENT
+            KC_DOWN,            KC_LCTL, KC_GRV,  KC_LGUI, KC_LALT, KC_LNG2, KC_SPC, KC_SPC, KC_SPC, KC_LNG1,  KC_APP,  KC_RALT, KC_RGUI,  KC_RCTL, KC_P0,   KC_P1,   KC_P2,   KC_P3,   KC_PENT
     ),
 
     [_FN] =  LAYOUT(
             XXXXXXX,          B_BASE,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, B_LEFT, XXXXXXX, XXXXXXX, B_CENTER, XXXXXXX, XXXXXXX, B_RIGHT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, B_FLIP,
-        RGB_RMOD, RGB_MOD,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                                XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
             _______,          B_BASE,  XXXXXXX, CSYSTEM, XXXXXXX, BSYSTEM, XXXXXXX, B_LEFT, XXXXXXX, XXXXXXX, B_CENTER, XXXXXXX, XXXXXXX, B_RIGHT, XXXXXXX, XXXXXXX,  QWERTY, XXXXXXX, XXXXXXX, B_FLIP,
-            MI_VELD,               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+            MI_VELD,            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         MI_OCTD, MI_OCTU,     B_BASE,  XXXXXXX, TGLBASS, ACCOBAS, TGLMICH, XXXXXXX, B_LEFT, XXXXXXX, XXXXXXX, B_CENTER, XXXXXXX, XXXXXXX, B_RIGHT, XXXXXXX, XXXXXXX, XXXXXXX, VERSION, XXXXXXX, B_FLIP,
-            MI_VELD,               TGLINTR, TGLTRNS, TGLCHGR, XXXXXXX, XXXXXXX, RGB_SAD, RGB_SAI, RGB_HUD, RGB_HUI, RGB_SPD, RGB_SPI, RGB_VAD, RGB_VAI, RGB_RMOD, RGB_MOD, EEP_RST, TGLINDI, RGB_TOG
+            MI_VELD,            TGLINTR, TGLTRNS, TGLCHGR, XXXXXXX, XXXXXXX, RGB_SAD, RGB_SAI, RGB_HUD, RGB_HUI, RGB_SPD, RGB_SPI, RGB_VAD, RGB_VAI, RGB_RMOD, RGB_MOD, EE_CLR, TGLINDI, RGB_TOG
     )
 };
 
+#if defined(ENCODER_MAP_ENABLE)
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
+    [_BASE]          = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [_SEPALEFTOCT]   = { ENCODER_CCW_CW(_______, _______) },
+    [_SEPAHALF]      = { ENCODER_CCW_CW(_______, _______) },
+    [_SEPARIGHTOCT]  = { ENCODER_CCW_CW(_______, _______) },
+    [_CSYSTEM]       = { ENCODER_CCW_CW(_______, _______) },
+    [_BSYSTEM]       = { ENCODER_CCW_CW(_______, _______) },
+    [_TRANS]         = { ENCODER_CCW_CW(_______, _______) },
+    [_FLIPBASE]      = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [_FLIPTRANS]     = { ENCODER_CCW_CW(_______, _______) },
+    [_ACCORDIONBASS] = { ENCODER_CCW_CW(_______, _______) },
+    [_QWERTY]        = { ENCODER_CCW_CW(_______, _______) },
+    [_FN]            = { ENCODER_CCW_CW(RGB_RMOD, RGB_MOD) },
+};
+#endif
+
+/* Define below to set C_SYSTEM layer as default. */
+// #define C_SYSTEM_DEFAULT_MODE
+/* Define below to tone down the LED appearance.  */
+// #define LED_STANDARD_MODE
 // commom codes called from eeconfig_init_user() and keyboard_post_init_user().
 void my_init(void){
     //  Set octave to MI_OCT_1
-    midi_config.octave = MI_OCT_0 - MIDI_OCTAVE_MIN;
+    midi_config.octave = QK_MIDI_OCTAVE_0 - MIDI_OCTAVE_MIN;
     // avoid using 127 since it is used as a special number in some sound sources.
     midi_config.velocity = MIDI_INITIAL_VELOCITY;
+
     default_layer_set(_LS_BASE);
+#ifdef C_SYSTEM_DEFAULT_MODE
+    layer_state_set(_LS_CSYSTEM);
+#else
     layer_state_set(_LS_BASE);
+#endif
 
 #ifdef RGB_MATRIX_ENABLE
+    led_indicator_enable = false;
+#   ifdef LED_STANDARD_MODE
+    rgb_matrix_mode(RGB_MATRIX_SOLID_REACTIVE_SIMPLE);
+#   else
     //  party mode (for LED soldering test. Enable rainbow color effect, and disable led_indicator to check all LEDs)
     rgb_matrix_mode(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
-    led_indicator_enable = false;
+#   endif
 #endif  // RGB_MATRIX_ENABLE
 }
 
@@ -877,24 +907,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         // MIDI Chord Keycodes, on the left side.
         case MI_CH_Cr ... MI_CH_Br:  // Root Notes
-            root_note = keycode - MI_CH_Cr + MI_C_1;
+            root_note = keycode - MI_CH_Cr + MI_C1;
             my_process_midi4Bass(midi_bass_ch, record, chord_status, chord, root_note, IS_SINGLE_BASS());
             break;
 
         case MI_CH_C ... MI_CH_B:  // Major Chords
-            root_note = keycode - MI_CH_C + MI_C_2;
+            root_note = keycode - MI_CH_C + MI_C2;
             // Major Third and Fifth Notes
             my_process_midi4DiadChords(midi_chord_ch, record, chord_status, chord, root_note, 4, 7);
             break;
 
         case MI_CH_Cm ... MI_CH_Bm:  // Minor Chord
-            root_note = keycode - MI_CH_Cm + MI_C_2;
+            root_note = keycode - MI_CH_Cm + MI_C2;
             // Minor Third and Fifth Notes
             my_process_midi4DiadChords(midi_chord_ch, record, chord_status, chord, root_note, 3, 7);
             break;
 
         case MI_CH_CDom7 ... MI_CH_BDom7:  // Dominant 7th Chord
-            root_note = keycode - MI_CH_CDom7 + MI_C_2;
+            root_note = keycode - MI_CH_CDom7 + MI_C2;
             // Major Third, Major Fifth, and Minor Seventh Notes
             my_process_midi4TriadChords(midi_chord_ch, record, chord_status, chord, root_note, 4, 7, 10);
             break;
@@ -925,7 +955,7 @@ void set_led_c_indicator(uint8_t layerNo, uint8_t r, uint8_t g, uint8_t b) {
 }
 
 #ifdef RGB_MATRIX_ENABLE
-void rgb_matrix_indicators_user(void) {
+bool rgb_matrix_indicators_user(void) {
     // uint32_t mode = rgblight_get_mode();
 
     if (rgb_matrix_is_enabled()) {  // turn the lights on when it is enabled.
@@ -1014,21 +1044,30 @@ void rgb_matrix_indicators_user(void) {
                 set_led_c_indicator(_BSYSTEM, TRANS_LAYER_COLOR);
                 break;
 
+            case _LS_ACCORDIONBASS:
+                // indicate C location
+                if (led_indicator_enable) {  //  turn on indicators when enabled.
+                    rgb_matrix_set_color(led_single_col_indicator[_KEY13][_MID37], BASE_LAYER_COLOR);         //  C
+                    rgb_matrix_set_color(led_single_col_indicator[_KEY37][_MID37], BASE_LAYER_COLOR);         //  C
+                }
+                break;
+
             case _LS_FN ... _LS_MAX:  //  When Mute Button is long-pressed, the previous layers are still active.
                 for (i = 1; i < 5; i++) {
                     rgb_matrix_set_color(i, RGB_DARKSPRINGGREEN);  //  up(1) down(4) left(3) right(2)  keys
                 }
-                rgb_matrix_set_color(led_single_col_indicator[_KEY02][0], RGB_DARKSPRINGGREEN);   //  TGLTRNS
-                rgb_matrix_set_color(led_single_col_indicator[_KEY04][0], RGB_DARKSPRINGGREEN);   //  TGLINTR
-                rgb_matrix_set_color(led_single_col_indicator[_KEY06][0], RGB_DARKSPRINGGREEN);   //  TGLCHGR
+                rgb_matrix_set_color(led_single_col_indicator[_KEY02][_BTM37], RGB_DARKSPRINGGREEN);   //  TGLINTR
+                rgb_matrix_set_color(led_single_col_indicator[_KEY04][_BTM37], RGB_DARKSPRINGGREEN);   //  TGLTRNS
+                rgb_matrix_set_color(led_single_col_indicator[_KEY06][_BTM37], RGB_DARKSPRINGGREEN);   //  TGLCHGR
 
-                rgb_matrix_set_color(led_single_col_indicator[_KEY31][1], RGB_DARKCORAL);         //  QWERTY
-                rgb_matrix_set_color(led_single_col_indicator[_KEY05][1], RGB_DARKCORAL);         //  CSYSTEM
-                rgb_matrix_set_color(led_single_col_indicator[_KEY09][1], RGB_DARKCORAL);         //  BSYSTEM
+                rgb_matrix_set_color(led_single_col_indicator[_KEY05][_MID37], RGB_DARKCORAL);         //  CSYSTEM
+                rgb_matrix_set_color(led_single_col_indicator[_KEY09][_MID37], RGB_DARKCORAL);         //  BSYSTEM
+                rgb_matrix_set_color(led_single_col_indicator[_KEY31][_MID37], RGB_DARKCORAL);         //  QWERTY
 
-                rgb_matrix_set_color(led_single_col_indicator[_KEY05][0], RGB_DARKTURQUOISE);     //  TGLBASS
-                rgb_matrix_set_color(led_single_col_indicator[_KEY07][0], RGB_DARKCORAL);         //  ACCOBAS
-                rgb_matrix_set_color(led_single_col_indicator[_KEY09][0], RGB_DARKTURQUOISE);     //  TGLMICH
+                rgb_matrix_set_color(led_single_col_indicator[_KEY05][_BTM37], RGB_DARKTURQUOISE);     //  TGLBASS
+                rgb_matrix_set_color(led_single_col_indicator[_KEY07][_BTM37], RGB_DARKCORAL);         //  ACCOBAS
+                rgb_matrix_set_color(led_single_col_indicator[_KEY09][_BTM37], RGB_DARKTURQUOISE);     //  TGLMICH
+                rgb_matrix_set_color(led_single_col_indicator[_KEY33][_BTM37], RGB_DARKGOLD);          //  VERSION
 
                 for (i = 0; i < 3; i++) {
                     rgb_matrix_set_color(led_single_col_indicator[_KEY01][i], BASE_LAYER_COLOR);   //  B_BASE
@@ -1044,10 +1083,11 @@ void rgb_matrix_indicators_user(void) {
 
                 for (i = _KEY12; i < _KEY37; i+=2){  //  even numbers from _KEY12 to _KEY36 are LED related settings.
                     // turn on the bottom row only to keep the visibility of the RGB MATRIX effects.
-                    rgb_matrix_set_color(led_single_col_indicator[i][0], RGB_DARKSPRINGGREEN);  //       //  LED related settings.
+                    rgb_matrix_set_color(led_single_col_indicator[i][_BTM37], RGB_DARKSPRINGGREEN);  //       //  LED related settings.
                 }
                 break;
         }
     }
+    return false;
 }
 #endif  // RGB_MATRIX_ENABLE
